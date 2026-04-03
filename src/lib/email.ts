@@ -20,7 +20,7 @@ export async function sendEmail(opts: {
       },
       body: JSON.stringify({
         from: 'Context Capsule <noreply@contextcapsule.ai>',
-        to: opts.to,
+        to: [opts.to],
         subject: opts.subject,
         html: opts.html,
       }),
@@ -71,7 +71,7 @@ export function renderWelcomeEmail(apiKey: string): string {
         <tr><td style="padding:0 32px 24px 32px;">
           <p style="margin:0 0 8px 0;font-size:12px;font-weight:700;color:#666;letter-spacing:1px;">QUICK START</p>
           <div style="background:#111;border-radius:4px;padding:14px;word-break:break-all;">
-            <code style="font-family:'Courier New',Courier,monospace;font-size:12px;color:#ccc;line-height:1.5;">curl -X POST https://contextcapsule.ai/v1/capsules \\<br>&nbsp;&nbsp;-H "Authorization: Bearer ${apiKey}" \\<br>&nbsp;&nbsp;-H "Content-Type: application/json" \\<br>&nbsp;&nbsp;-d '{"title":"my first capsule","content":"hello world"}'</code>
+            <code style="font-family:'Courier New',Courier,monospace;font-size:12px;color:#ccc;line-height:1.5;">curl -X POST https://contextcapsule.ai/v1/capsules \\<br>&nbsp;&nbsp;-H "Authorization: Bearer ${apiKey}" \\<br>&nbsp;&nbsp;-H "Content-Type: application/json" \\<br>&nbsp;&nbsp;-d '{"summary":"My first capsule","decisions":["Use React"],"next_steps":["Set up CI"]}'</code>
           </div>
         </td></tr>
 
