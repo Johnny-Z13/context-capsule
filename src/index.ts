@@ -10,6 +10,7 @@ import { renderLlmsTxt } from './views/llms-txt.js'
 import { renderLlmsFullTxt } from './views/llms-full-txt.js'
 import { getOpenApiSpec } from './views/openapi.js'
 import { getMcpDiscovery } from './views/mcp-json.js'
+import { renderOgImageSvg } from './views/og-image.js'
 import { cors, requestId, bodyLimit, securityHeaders } from './middleware/security.js'
 import { requestLogger } from './middleware/logger.js'
 
@@ -43,9 +44,9 @@ app.onError((err, c) => {
 // Routes
 app.get('/', (c) => c.html(renderLandingPage()))
 app.get('/health', (c) => c.json({ status: 'ok' }))
-app.route('/v1/capsules', capsulesRouter)
 app.route('/v1/capsules', fetchRouter)
 app.route('/capsule', fetchRouter)
+app.route('/v1/capsules', capsulesRouter)
 app.route('/v1/auth', authRouter)
 app.route('/cron', cronRouter)
 
@@ -69,6 +70,25 @@ app.get('/.well-known/mcp.json', (c) => {
   c.header('Cache-Control', 'public, max-age=86400')
   return c.json(getMcpDiscovery())
 })
+app.get('/.well-known/ai-plugin.json', (c) => {
+  c.header('Cache-Control', 'public, max-age=86400')
+  return c.json({
+    schema_version: 'v1',
+    name_for_human: 'Context Capsule',
+    name_for_model: 'context_capsule',
+    description_for_human: 'Portable context packets for AI agent workflows.',
+    description_for_model:
+      'Create, fetch, and share structured context capsules that agents use for handoffs. ' +
+      'Capsules contain summaries, decisions, and next steps. ' +
+      'Use this to reduce context window waste, coordinate multi-agent workflows, ' +
+      'and hand off structured working memory between sessions. Capsules expire after 7 days max.',
+    auth: { type: 'service_http', authorization_type: 'bearer' },
+    api: { type: 'openapi', url: 'https://contextcapsule.ai/.well-known/openapi.json' },
+    logo_url: 'https://contextcapsule.ai/og-image.png',
+    contact_email: 'hello@contextcapsule.ai',
+    legal_info_url: 'https://contextcapsule.ai',
+  })
+})
 app.get('/.well-known/agent.json', (c) => {
   c.header('Cache-Control', 'public, max-age=86400')
   return c.json({
@@ -90,8 +110,12 @@ app.get('/robots.txt', (c) => {
     'Sitemap: https://contextcapsule.ai/sitemap.xml\n\n' +
     '# AI agent discovery\n' +
     '# LLM context: /llms.txt\n' +
+    '# Full LLM docs: /llms-full.txt\n' +
     '# OpenAPI spec: /.well-known/openapi.json\n' +
-    '# MCP discovery: /.well-known/mcp.json\n'
+    '# OpenAI plugin: /.well-known/ai-plugin.json\n' +
+    '# Agent protocol: /.well-known/agent.json\n' +
+    '# MCP discovery: /.well-known/mcp.json\n' +
+    '# API docs: /docs\n'
   )
 })
 app.get('/sitemap.xml', (c) => {
@@ -104,6 +128,12 @@ app.get('/sitemap.xml', (c) => {
   <url><loc>https://contextcapsule.ai/.well-known/openapi.json</loc><changefreq>monthly</changefreq><priority>0.5</priority></url>
   <url><loc>https://contextcapsule.ai/.well-known/mcp.json</loc><changefreq>monthly</changefreq><priority>0.5</priority></url>
 </urlset>`)
+})
+
+app.get('/og-image.png', (c) => {
+  c.header('Content-Type', 'image/svg+xml')
+  c.header('Cache-Control', 'public, max-age=86400')
+  return c.body(renderOgImageSvg())
 })
 
 // Dev console (private, requires DEV_SECRET)
