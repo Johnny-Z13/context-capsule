@@ -139,6 +139,11 @@ app.get('/og-image.png', (c) => {
   return c.body(renderOgImageSvg())
 })
 
+// Google Search Console verification
+app.get('/google72aa1534e21928da.html', (c) => {
+  return c.text('google-site-verification: google72aa1534e21928da.html')
+})
+
 // Dev console (private, requires DEV_SECRET)
 app.get('/dev/console', (c) => {
   const secret = c.req.query('key')
