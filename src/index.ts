@@ -4,6 +4,7 @@ import { fetchRouter } from './routes/fetch.js'
 import { authRouter } from './routes/auth.js'
 import { cronRouter } from './routes/cron.js'
 import { renderLandingPage } from './views/landing-page.js'
+import { renderDevConsole } from './views/dev-console.js'
 import { renderDocsPage } from './views/docs-page.js'
 import { renderLlmsTxt } from './views/llms-txt.js'
 import { renderLlmsFullTxt } from './views/llms-full-txt.js'
@@ -103,6 +104,15 @@ app.get('/sitemap.xml', (c) => {
   <url><loc>https://contextcapsule.ai/.well-known/openapi.json</loc><changefreq>monthly</changefreq><priority>0.5</priority></url>
   <url><loc>https://contextcapsule.ai/.well-known/mcp.json</loc><changefreq>monthly</changefreq><priority>0.5</priority></url>
 </urlset>`)
+})
+
+// Dev console (private, requires DEV_SECRET)
+app.get('/dev/console', (c) => {
+  const secret = c.req.query('key')
+  if (!secret || secret !== process.env.DEV_SECRET) {
+    return c.json({ error: 'not_found', message: 'Route not found.' }, 404)
+  }
+  return c.html(renderDevConsole())
 })
 
 // 404 fallback
