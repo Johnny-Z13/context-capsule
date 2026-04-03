@@ -73,9 +73,9 @@ export function renderLandingPage(): string {
       margin-bottom: 2.5rem;
     }
     .hero-brand {
-      font-size: 3.8rem;
+      font-size: 4.5rem;
       font-weight: normal;
-      letter-spacing: 0.15em;
+      letter-spacing: 0.18em;
       text-transform: uppercase;
       margin-bottom: 1rem;
       text-align: center;
@@ -618,7 +618,7 @@ export function renderLandingPage(): string {
     @media (max-width: 640px) {
       body { padding: 3rem 1rem; }
       .hero { margin-bottom: 2rem; }
-      .hero-brand { font-size: 2.8rem; letter-spacing: 0.12em; }
+      .hero-brand { font-size: 3.2rem; letter-spacing: 0.14em; }
       .hero-tagline { font-size: 0.75rem; }
       .hero-headline { font-size: 1rem; }
       .section-label { font-size: 0.65rem; }
@@ -641,7 +641,7 @@ export function renderLandingPage(): string {
 
     /* Mobile */
     @media (max-width: 440px) {
-      .hero-brand { font-size: 2.2rem; letter-spacing: 0.1em; }
+      .hero-brand { font-size: 2.5rem; letter-spacing: 0.1em; }
       .hero-headline { font-size: 0.9rem; }
       .printout-row { padding: 0.4rem 0.75rem; font-size: 0.7rem; }
       .printout-row ul li { font-size: 0.65rem; }
@@ -657,7 +657,7 @@ export function renderLandingPage(): string {
 
     /* Small mobile */
     @media (max-width: 340px) {
-      .hero-brand { font-size: 1.8rem; letter-spacing: 0.08em; }
+      .hero-brand { font-size: 2rem; letter-spacing: 0.08em; }
     }
 
     /* Glyph flicker */
@@ -935,7 +935,9 @@ export function renderLandingPage(): string {
     <nav class="footer-nav">
       <a href="/docs">API docs</a>
       <a href="/llms.txt">llms.txt</a>
-      <a href="https://proofslip.ai" target="_blank">ProofSlip</a>
+      <a href="https://www.proofslip.ai" target="_blank">ProofSlip</a>
+      <a href="https://www.npmjs.com/package/@contextcapsule/mcp-server" target="_blank">npm</a>
+      <a href="https://github.com/Johnny-Z13/context-capsule" target="_blank">GitHub</a>
     </nav>
 
     <!-- Footer -->

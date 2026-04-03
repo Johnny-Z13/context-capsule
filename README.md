@@ -6,7 +6,7 @@ Package the facts, current state, and next-step intent an agent needs to continu
 
 > Agents should not restart from scratch when they can resume from a capsule.
 
-[Live Site](https://contextcapsule.ai) | [API Docs](https://contextcapsule.ai/docs) | [MCP Server](https://www.npmjs.com/package/@contextcapsule/mcp-server) | [llms.txt](https://contextcapsule.ai/llms.txt)
+[Live Site](https://www.contextcapsule.ai) | [API Docs](https://www.contextcapsule.ai/docs) | [MCP Server](https://www.npmjs.com/package/@contextcapsule/mcp-server) | [llms.txt](https://www.contextcapsule.ai/llms.txt)
 
 ## The Problem
 
@@ -44,7 +44,7 @@ Every capsule includes structured decisions, next steps, and optional payload so
 ### 1. Get an API Key
 
 ```bash
-curl -X POST https://contextcapsule.ai/v1/auth/signup \
+curl -X POST https://www.contextcapsule.ai/v1/auth/signup \
   -H "Content-Type: application/json" \
   -d '{"email": "you@example.com"}'
 ```
@@ -54,7 +54,7 @@ Save the returned key immediately — it cannot be retrieved later.
 ### 2. Create a Capsule
 
 ```bash
-curl -X POST https://contextcapsule.ai/v1/capsules \
+curl -X POST https://www.contextcapsule.ai/v1/capsules \
   -H "Authorization: Bearer ck_your_key_here" \
   -H "Content-Type: application/json" \
   -d '{
@@ -82,7 +82,7 @@ Returns:
   "summary": "Completed data migration for user table, added new columns",
   "decisions": ["Used addColumn instead of recreating table", "Kept backward compat with old schema"],
   "next_steps": ["Run integration tests against new schema", "Update API serializers for new fields"],
-  "capsule_url": "https://contextcapsule.ai/capsule/cap_abc123...",
+  "capsule_url": "https://www.contextcapsule.ai/capsule/cap_abc123...",
   "created_at": "2026-04-03T12:00:00.000Z",
   "expires_at": "2026-04-10T12:00:00.000Z"
 }
@@ -92,7 +92,7 @@ Returns:
 
 ```bash
 # JSON (for agents)
-curl https://contextcapsule.ai/v1/capsules/cap_abc123?format=json
+curl https://www.contextcapsule.ai/v1/capsules/cap_abc123?format=json
 
 # HTML (for humans — paste the capsule_url in a browser)
 ```
@@ -171,12 +171,13 @@ Context Capsule exposes machine-readable discovery endpoints so agents and tools
 
 | Endpoint | Format | Purpose |
 |----------|--------|---------|
-| [`/llms.txt`](https://contextcapsule.ai/llms.txt) | Plain text | LLM context summary |
-| [`/llms-full.txt`](https://contextcapsule.ai/llms-full.txt) | Plain text | Complete API reference for LLMs |
-| [`/docs`](https://contextcapsule.ai/docs) | HTML | Human-readable API docs |
-| [`/.well-known/openapi.json`](https://contextcapsule.ai/.well-known/openapi.json) | JSON | OpenAPI 3.1 spec |
-| [`/.well-known/mcp.json`](https://contextcapsule.ai/.well-known/mcp.json) | JSON | MCP server discovery |
-| [`/.well-known/agent.json`](https://contextcapsule.ai/.well-known/agent.json) | JSON | Agent protocol discovery |
+| [`/llms.txt`](https://www.contextcapsule.ai/llms.txt) | Plain text | LLM context summary |
+| [`/llms-full.txt`](https://www.contextcapsule.ai/llms-full.txt) | Plain text | Complete API reference for LLMs |
+| [`/docs`](https://www.contextcapsule.ai/docs) | HTML | Human-readable API docs |
+| [`/.well-known/openapi.json`](https://www.contextcapsule.ai/.well-known/openapi.json) | JSON | OpenAPI 3.1 spec |
+| [`/.well-known/mcp.json`](https://www.contextcapsule.ai/.well-known/mcp.json) | JSON | MCP server discovery |
+| [`/.well-known/ai-plugin.json`](https://www.contextcapsule.ai/.well-known/ai-plugin.json) | JSON | ChatGPT plugin manifest |
+| [`/.well-known/agent.json`](https://www.contextcapsule.ai/.well-known/agent.json) | JSON | Agent protocol discovery |
 
 ## Self-Hosting
 
@@ -315,7 +316,7 @@ Context Capsule tells agents what to do next. [**ProofSlip**](https://proofslip.
 | **Role** | Navigational | Evidential |
 | **Answers** | "What's the situation and what should happen next?" | "What actually happened, and can you verify it?" |
 | **Primitive** | Execution context packet | Verifiable receipt |
-| **Get started** | [contextcapsule.ai](https://contextcapsule.ai) | [proofslip.ai](https://proofslip.ai) |
+| **Get started** | [contextcapsule.ai](https://www.contextcapsule.ai) | [proofslip.ai](https://proofslip.ai) |
 
 ### Example: Verified Handoff
 
@@ -332,7 +333,7 @@ curl -X POST https://proofslip.ai/v1/receipts \
 # Returns: { "receipt_id": "rct_abc123", ... }
 
 # 2. Agent A creates a capsule referencing that receipt
-curl -X POST https://contextcapsule.ai/v1/capsules \
+curl -X POST https://www.contextcapsule.ai/v1/capsules \
   -H "Authorization: Bearer ck_your_key" \
   -H "Content-Type: application/json" \
   -d '{
@@ -347,7 +348,7 @@ curl -X POST https://contextcapsule.ai/v1/capsules \
 # Returns: { "capsule_id": "cap_xyz789", ... }
 
 # 3. Agent B picks up the capsule and verifies the receipt before continuing
-curl https://contextcapsule.ai/v1/capsules/cap_xyz789?format=json
+curl https://www.contextcapsule.ai/v1/capsules/cap_xyz789?format=json
 curl https://proofslip.ai/v1/verify/rct_abc123?format=json
 # Receipt checks out → proceed with integration tests
 ```
