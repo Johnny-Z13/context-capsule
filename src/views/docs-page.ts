@@ -8,7 +8,7 @@ export function renderDocsPage(): string {
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>API Docs — Context Capsule</title>
   <meta name="description" content="Context Capsule API documentation. Create and fetch structured context capsules for agent handoffs.">
-  <link rel="canonical" href="https://contextcapsule.ai/docs">
+  <link rel="canonical" href="https://www.contextcapsule.ai/docs">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='12' fill='%230a0a0a'/><text x='50' y='68' text-anchor='middle' font-size='52' font-family='monospace' fill='%23e0e0e0'>C</text></svg>">
   <style>
     ${FONT_FACE_CSS}
@@ -146,7 +146,7 @@ export function renderDocsPage(): string {
     <div class="section">
       <p>Create a context capsule. Auth required. Rate limit: 60/min per API key.</p>
       <h3>Request</h3>
-      <pre><code>curl -X POST https://contextcapsule.ai/v1/capsules \\
+      <pre><code>curl -X POST https://www.contextcapsule.ai/v1/capsules \\
   -H "Authorization: Bearer ak_your_key" \\
   -H "Content-Type: application/json" \\
   -d '{
@@ -160,7 +160,7 @@ export function renderDocsPage(): string {
       <h3>Response (201)</h3>
       <pre><code>{
   "id": "cap_...",
-  "short_url": "https://contextcapsule.ai/capsule/cap_...",
+  "short_url": "https://www.contextcapsule.ai/capsule/cap_...",
   "expires_at": "2025-01-01T12:00:00.000Z",
   "request_id": "req_..."
 }</code></pre>
@@ -170,7 +170,7 @@ export function renderDocsPage(): string {
     <h2><span class="badge badge-get">GET</span> <span class="endpoint-path">/v1/capsules/:id</span></h2>
     <div class="section">
       <p>Fetch a capsule by ID. Public. Rate limit: 120/min per IP.</p>
-      <pre><code>curl https://contextcapsule.ai/v1/capsules/cap_abc123</code></pre>
+      <pre><code>curl https://www.contextcapsule.ai/v1/capsules/cap_abc123</code></pre>
       <h3>Response (200)</h3>
       <pre><code>{
   "id": "cap_abc123",
@@ -190,7 +190,7 @@ export function renderDocsPage(): string {
     <h2><span class="badge badge-post">POST</span> <span class="endpoint-path">/v1/auth/signup</span></h2>
     <div class="section">
       <p>Get a free API key. Rate limit: 5/min per IP.</p>
-      <pre><code>curl -X POST https://contextcapsule.ai/v1/auth/signup \\
+      <pre><code>curl -X POST https://www.contextcapsule.ai/v1/auth/signup \\
   -H "Content-Type: application/json" \\
   -d '{"email": "you@example.com"}'</code></pre>
       <h3>Response (201)</h3>
@@ -204,7 +204,7 @@ export function renderDocsPage(): string {
     <h2><span class="badge badge-post">POST</span> <span class="endpoint-path">/cron/cleanup</span></h2>
     <div class="section">
       <p>Hourly cleanup of expired capsules. Protected by a shared secret.</p>
-      <pre><code>curl -X POST https://contextcapsule.ai/cron/cleanup \\
+      <pre><code>curl -X POST https://www.contextcapsule.ai/cron/cleanup \\
   -H "Authorization: Bearer CRON_SECRET"</code></pre>
       <h3>Response (200)</h3>
       <pre><code>{"deleted": 42}</code></pre>

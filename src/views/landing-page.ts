@@ -11,19 +11,19 @@ export function renderLandingPage(): string {
   <meta name="keywords" content="AI agent context, agent handoff API, multi-agent coordination, context compression, agent working memory, LLM context management, agent workflow handoff, portable agent context, structured context API, ephemeral context packets">
   <meta name="robots" content="index, follow">
   <meta name="author" content="Context Capsule">
-  <link rel="canonical" href="https://contextcapsule.ai">
+  <link rel="canonical" href="https://www.contextcapsule.ai">
   <meta property="og:title" content="Context Capsule — Portable Context for Agent Workflows">
   <meta property="og:description" content="Free handoff API for AI agents. Structured, compressed context packets that expire. Less window waste, better coordination. Create, fetch, expire.">
-  <meta property="og:image" content="https://contextcapsule.ai/og-image.png">
+  <meta property="og:image" content="https://www.contextcapsule.ai/og-image.png">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
-  <meta property="og:url" content="https://contextcapsule.ai">
+  <meta property="og:url" content="https://www.contextcapsule.ai">
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="Context Capsule">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Context Capsule — Portable Context for Agent Workflows">
   <meta name="twitter:description" content="Free handoff API for AI agents. Structured, compressed context packets that expire. Less window waste, better coordination.">
-  <meta name="twitter:image" content="https://contextcapsule.ai/og-image.png">
+  <meta name="twitter:image" content="https://www.contextcapsule.ai/og-image.png">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='12' fill='%230a0a0a'/><text x='50' y='68' text-anchor='middle' font-size='52' font-family='monospace' fill='%23e0e0e0'>C</text></svg>">
   <script type="application/ld+json">
   {
@@ -31,14 +31,14 @@ export function renderLandingPage(): string {
     "@type": "SoftwareApplication",
     "name": "Context Capsule",
     "description": "Free AI agent handoff API. Create structured, compressed context packets that agents pass between sessions. Prevents context loss, reduces token waste, and enables clean multi-agent coordination.",
-    "url": "https://contextcapsule.ai",
+    "url": "https://www.contextcapsule.ai",
     "applicationCategory": "DeveloperApplication",
     "operatingSystem": "Any",
     "keywords": "AI agent context, agent handoff, context compression, multi-agent coordination, ephemeral context",
     "creator": {
       "@type": "Organization",
       "name": "Context Capsule",
-      "url": "https://contextcapsule.ai"
+      "url": "https://www.contextcapsule.ai"
     },
     "offers": {
       "@type": "Offer",

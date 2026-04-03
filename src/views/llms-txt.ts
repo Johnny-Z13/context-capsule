@@ -7,7 +7,7 @@ export function renderLlmsTxt(): string {
 
 ### 1. Get an API key
 
-POST https://contextcapsule.ai/v1/auth/signup
+POST https://www.contextcapsule.ai/v1/auth/signup
 Content-Type: application/json
 
 {"email": "you@example.com"}
@@ -16,7 +16,7 @@ Response: {"api_key": "ak_..."}
 
 ### 2. Create a capsule
 
-POST https://contextcapsule.ai/v1/capsules
+POST https://www.contextcapsule.ai/v1/capsules
 Authorization: Bearer ak_your_key
 Content-Type: application/json
 
@@ -39,15 +39,15 @@ Content-Type: application/json
   "expires_in": 3600
 }
 
-Response: {"id": "cap_...", "short_url": "https://contextcapsule.ai/capsule/cap_...", "expires_at": "..."}
+Response: {"id": "cap_...", "short_url": "https://www.contextcapsule.ai/capsule/cap_...", "expires_at": "..."}
 
 ### 3. Fetch a capsule
 
-GET https://contextcapsule.ai/v1/capsules/{id}
+GET https://www.contextcapsule.ai/v1/capsules/{id}
 
 No auth required. Returns the full capsule JSON.
 
-Short URL also works: GET https://contextcapsule.ai/capsule/{id}
+Short URL also works: GET https://www.contextcapsule.ai/capsule/{id}
 
 ## Create Capsule Schema
 
@@ -85,10 +85,10 @@ Fetch requests are public — no auth needed.
 
 ## Discovery
 
-- API docs: https://contextcapsule.ai/docs
-- Full reference: https://contextcapsule.ai/llms-full.txt
-- OpenAPI spec: https://contextcapsule.ai/.well-known/openapi.json
-- MCP discovery: https://contextcapsule.ai/.well-known/mcp.json
+- API docs: https://www.contextcapsule.ai/docs
+- Full reference: https://www.contextcapsule.ai/llms-full.txt
+- OpenAPI spec: https://www.contextcapsule.ai/.well-known/openapi.json
+- MCP discovery: https://www.contextcapsule.ai/.well-known/mcp.json
 - MCP server: npx -y @contextcapsule/mcp-server
 `
 }

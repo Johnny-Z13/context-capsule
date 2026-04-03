@@ -23,7 +23,7 @@ function formatDate(iso: string): string {
 }
 
 export function renderCapsulePage(data: CapsuleViewData): string {
-  const baseUrl = process.env.BASE_URL || 'https://contextcapsule.ai'
+  const baseUrl = process.env.BASE_URL || 'https://www.contextcapsule.ai'
   const capsuleUrl = `${baseUrl}/capsule/${data.id}`
   const tweetText = encodeURIComponent(`Context capsule: ${data.summary}\n\n${capsuleUrl}\n\nvia @contextcapsule`)
 

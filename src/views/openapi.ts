@@ -5,9 +5,9 @@ export function getOpenApiSpec(): object {
       title: 'Context Capsule API',
       description: 'Portable context for agent workflows. Create structured, compressed, ephemeral handoff packets.',
       version: '1.0.0',
-      contact: { url: 'https://contextcapsule.ai' },
+      contact: { url: 'https://www.contextcapsule.ai' },
     },
-    servers: [{ url: 'https://contextcapsule.ai', description: 'Production' }],
+    servers: [{ url: 'https://www.contextcapsule.ai', description: 'Production' }],
     paths: {
       '/v1/auth/signup': {
         post: {

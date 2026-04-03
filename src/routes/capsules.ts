@@ -44,7 +44,7 @@ capsulesRouter.post('/', async (c) => {
         return errorResponse(c, 409, 'idempotency_conflict', 'A capsule with this idempotency_key already exists with different content.')
       }
 
-      const baseUrl = process.env.BASE_URL || 'https://contextcapsule.ai'
+      const baseUrl = process.env.BASE_URL || 'https://www.contextcapsule.ai'
       return c.json({
         capsule_id: capsule.id,
         summary: capsule.summary,
@@ -81,7 +81,7 @@ capsulesRouter.post('/', async (c) => {
     .where(eq(apiKeys.id, apiKeyRecord.id))
     .catch(() => {})
 
-  const baseUrl = process.env.BASE_URL || 'https://contextcapsule.ai'
+  const baseUrl = process.env.BASE_URL || 'https://www.contextcapsule.ai'
 
   return c.json({
     capsule_id: capsuleId,

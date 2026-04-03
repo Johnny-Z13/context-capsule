@@ -2,7 +2,7 @@ export function renderLlmsFullTxt(): string {
   return `# Context Capsule — Full API Reference
 
 > Portable context for agent workflows. Create structured, compressed, ephemeral handoff packets.
-> Website: https://contextcapsule.ai
+> Website: https://www.contextcapsule.ai
 > Sister product: ProofSlip (proofslip.ai)
 
 ================================================================================
@@ -26,7 +26,7 @@ Get a free API key. Public endpoint.
 Rate limit: 5/min per IP
 
 Request:
-  POST https://contextcapsule.ai/v1/auth/signup
+  POST https://www.contextcapsule.ai/v1/auth/signup
   Content-Type: application/json
 
   {"email": "you@example.com"}
@@ -43,7 +43,7 @@ Error responses:
   429 — rate_limited: Too many signup attempts
 
 curl example:
-  curl -X POST https://contextcapsule.ai/v1/auth/signup \\
+  curl -X POST https://www.contextcapsule.ai/v1/auth/signup \\
     -H "Content-Type: application/json" \\
     -d '{"email": "agent@example.com"}'
 
@@ -56,7 +56,7 @@ Create a context capsule. Auth required.
 Rate limit: 60/min per API key
 
 Request:
-  POST https://contextcapsule.ai/v1/capsules
+  POST https://www.contextcapsule.ai/v1/capsules
   Authorization: Bearer ak_your_key
   Content-Type: application/json
 
@@ -89,7 +89,7 @@ Request:
 Success response (201):
   {
     "id": "cap_...",
-    "short_url": "https://contextcapsule.ai/capsule/cap_...",
+    "short_url": "https://www.contextcapsule.ai/capsule/cap_...",
     "expires_at": "2025-01-01T12:00:00.000Z",
     "request_id": "req_..."
   }
@@ -131,7 +131,7 @@ If the same key is used with a different body, a 409 idempotency_conflict error
 is returned.
 
 curl example:
-  curl -X POST https://contextcapsule.ai/v1/capsules \\
+  curl -X POST https://www.contextcapsule.ai/v1/capsules \\
     -H "Authorization: Bearer ak_your_key" \\
     -H "Content-Type: application/json" \\
     -d '{
@@ -149,7 +149,7 @@ Fetch a capsule by ID. Public — no auth required.
 Rate limit: 120/min per IP
 
 Request:
-  GET https://contextcapsule.ai/v1/capsules/cap_abc123
+  GET https://www.contextcapsule.ai/v1/capsules/cap_abc123
 
 Success response (200):
   {
@@ -169,7 +169,7 @@ Error responses:
   429 — rate_limited: Too many fetch requests
 
 curl example:
-  curl https://contextcapsule.ai/v1/capsules/cap_abc123
+  curl https://www.contextcapsule.ai/v1/capsules/cap_abc123
 
 ================================================================================
 ## GET /capsule/:id (Short URL)
@@ -178,7 +178,7 @@ curl example:
 Alias for GET /v1/capsules/:id. Same behavior, same response.
 
 curl example:
-  curl https://contextcapsule.ai/capsule/cap_abc123
+  curl https://www.contextcapsule.ai/capsule/cap_abc123
 
 ================================================================================
 ## POST /cron/cleanup

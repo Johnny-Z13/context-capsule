@@ -83,10 +83,10 @@ app.get('/.well-known/ai-plugin.json', (c) => {
       'Use this to reduce context window waste, coordinate multi-agent workflows, ' +
       'and hand off structured working memory between sessions. Capsules expire after 7 days max.',
     auth: { type: 'service_http', authorization_type: 'bearer' },
-    api: { type: 'openapi', url: 'https://contextcapsule.ai/.well-known/openapi.json' },
-    logo_url: 'https://contextcapsule.ai/og-image.png',
+    api: { type: 'openapi', url: 'https://www.contextcapsule.ai/.well-known/openapi.json' },
+    logo_url: 'https://www.contextcapsule.ai/og-image.png',
     contact_email: 'hello@contextcapsule.ai',
-    legal_info_url: 'https://contextcapsule.ai',
+    legal_info_url: 'https://www.contextcapsule.ai',
   })
 })
 app.get('/.well-known/agent.json', (c) => {
@@ -94,20 +94,20 @@ app.get('/.well-known/agent.json', (c) => {
   return c.json({
     name: 'Context Capsule',
     description: 'Portable context for agent workflows. Structured, compressed, ephemeral handoff packets.',
-    url: 'https://contextcapsule.ai',
+    url: 'https://www.contextcapsule.ai',
     version: '1.0.0',
     capabilities: ['capsules', 'handoffs', 'context-compression'],
     protocol: 'openapi',
-    api: { type: 'openapi', url: 'https://contextcapsule.ai/.well-known/openapi.json' },
-    auth: { type: 'bearer', signup_url: 'https://contextcapsule.ai/v1/auth/signup' },
+    api: { type: 'openapi', url: 'https://www.contextcapsule.ai/.well-known/openapi.json' },
+    auth: { type: 'bearer', signup_url: 'https://www.contextcapsule.ai/v1/auth/signup' },
     mcp: { package: '@contextcapsule/mcp-server', install: 'npx -y @contextcapsule/mcp-server' },
-    llms_txt: 'https://contextcapsule.ai/llms.txt',
+    llms_txt: 'https://www.contextcapsule.ai/llms.txt',
   })
 })
 app.get('/robots.txt', (c) => {
   return c.text(
     'User-agent: *\nAllow: /\n\n' +
-    'Sitemap: https://contextcapsule.ai/sitemap.xml\n\n' +
+    'Sitemap: https://www.contextcapsule.ai/sitemap.xml\n\n' +
     '# AI agent discovery\n' +
     '# LLM context: /llms.txt\n' +
     '# Full LLM docs: /llms-full.txt\n' +
@@ -122,11 +122,14 @@ app.get('/sitemap.xml', (c) => {
   c.header('Content-Type', 'application/xml')
   return c.body(`<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url><loc>https://contextcapsule.ai</loc><changefreq>weekly</changefreq><priority>1.0</priority></url>
-  <url><loc>https://contextcapsule.ai/docs</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://contextcapsule.ai/llms.txt</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://contextcapsule.ai/.well-known/openapi.json</loc><changefreq>monthly</changefreq><priority>0.5</priority></url>
-  <url><loc>https://contextcapsule.ai/.well-known/mcp.json</loc><changefreq>monthly</changefreq><priority>0.5</priority></url>
+  <url><loc>https://www.contextcapsule.ai</loc><changefreq>weekly</changefreq><priority>1.0</priority></url>
+  <url><loc>https://www.contextcapsule.ai/docs</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://www.contextcapsule.ai/llms.txt</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://www.contextcapsule.ai/llms-full.txt</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://www.contextcapsule.ai/.well-known/openapi.json</loc><changefreq>monthly</changefreq><priority>0.5</priority></url>
+  <url><loc>https://www.contextcapsule.ai/.well-known/mcp.json</loc><changefreq>monthly</changefreq><priority>0.5</priority></url>
+  <url><loc>https://www.contextcapsule.ai/.well-known/agent.json</loc><changefreq>monthly</changefreq><priority>0.5</priority></url>
+  <url><loc>https://www.contextcapsule.ai/.well-known/ai-plugin.json</loc><changefreq>monthly</changefreq><priority>0.5</priority></url>
 </urlset>`)
 })
 
