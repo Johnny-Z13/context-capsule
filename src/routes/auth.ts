@@ -5,6 +5,7 @@ import { eq } from 'drizzle-orm'
 import { generateApiKey, generateApiKeyId, getKeyPrefix } from '../lib/ids.js'
 import { sha256 } from '../lib/hash.js'
 import { errorResponse } from '../lib/errors.js'
+import { sendEmail, renderWelcomeEmail } from '../lib/email.js'
 import { rateLimitByIp } from '../middleware/rate-limit.js'
 
 const authRouter = new Hono()
@@ -46,6 +47,21 @@ authRouter.post('/signup', async (c) => {
     tier: 'free',
     usageResetAt: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000),
   })
+
+  const source = typeof body.source === 'string' ? body.source : 'api'
+
+  if (source === 'web') {
+    await sendEmail({
+      to: email,
+      subject: 'Your Context Capsule API Key',
+      html: renderWelcomeEmail(key),
+    })
+
+    return c.json({
+      tier: 'free',
+      message: 'API key sent to your email.',
+    }, 201)
+  }
 
   return c.json({
     api_key: key,
