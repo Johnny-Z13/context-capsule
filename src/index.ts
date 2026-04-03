@@ -11,6 +11,7 @@ import { renderLlmsFullTxt } from './views/llms-full-txt.js'
 import { getOpenApiSpec } from './views/openapi.js'
 import { getMcpDiscovery } from './views/mcp-json.js'
 import { renderOgImageSvg } from './views/og-image.js'
+import { renderCapsulePage } from './views/capsule-page.js'
 import { cors, requestId, bodyLimit, securityHeaders } from './middleware/security.js'
 import { requestLogger } from './middleware/logger.js'
 
@@ -49,6 +50,39 @@ app.route('/capsule', fetchRouter)
 app.route('/v1/capsules', capsulesRouter)
 app.route('/v1/auth', authRouter)
 app.route('/cron', cronRouter)
+
+// Example capsule
+app.get('/example', (c) => {
+  c.header('Cache-Control', 'public, max-age=86400')
+  return c.html(renderCapsulePage({
+    id: 'cap_example_9k2m7x4p',
+    summary: 'Schema migration complete — user table split into users + profiles. Ready for integration tests.',
+    decisions: [
+      'Used addColumn for backward compat (no recreate)',
+      'Dual-write enabled for 2-week transition period',
+      'Backfill profiles from existing user data before cutover',
+    ],
+    nextSteps: [
+      'Run integration tests against new schema',
+      'Update API serializers for profile fields',
+      'Schedule cutover date with platform team',
+    ],
+    payload: {
+      migration_id: 'mig_20260403_split_users',
+      tables_affected: ['users', 'profiles'],
+      rows_backfilled: 12847,
+      backward_compat: true,
+    },
+    refs: {
+      workflow_id: 'migration-456',
+      agent_id: 'schema-agent',
+      session_id: 'sess_abc123',
+    },
+    audience: 'human',
+    createdAt: '2026-04-03T12:00:00.000Z',
+    expiresAt: '2026-04-10T12:00:00.000Z',
+  }))
+})
 
 // Discovery endpoints
 app.get('/docs', (c) => c.html(renderDocsPage()))
