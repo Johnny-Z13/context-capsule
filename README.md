@@ -291,7 +291,7 @@ src/
 │   ├── ids.ts            # nanoid generators (cap_, ck_, req_)
 │   ├── hash.ts           # SHA-256 hashing
 │   ├── validate.ts       # Input validation
-│   ├── rate-limit.ts     # In-memory sliding window tracker
+│   ├── rate-limit.ts     # In-memory fixed window tracker
 │   └── errors.ts         # Error response builder
 └── views/
     ├── font.ts           # Departure Mono as inline base64

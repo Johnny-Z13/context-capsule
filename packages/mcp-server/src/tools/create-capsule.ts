@@ -32,9 +32,9 @@ export function registerCreateCapsuleTool(
         .optional()
         .describe('Optional structured JSON data (max 32KB)'),
       refs: z
-        .record(z.string())
+        .record(z.union([z.string(), z.array(z.string())]))
         .optional()
-        .describe('Optional workflow references (workflow_id, agent_id, session_id, etc.)'),
+        .describe('Optional workflow references (workflow_id, agent_id, session_id, receipt_ids, etc.)'),
       expires_in: z
         .number()
         .min(60)
@@ -43,6 +43,7 @@ export function registerCreateCapsuleTool(
         .describe('TTL in seconds (60-604800, default 604800 = 7 days)'),
       idempotency_key: z
         .string()
+        .max(200)
         .optional()
         .describe('Prevents duplicate capsules if you retry the same request'),
       audience: z

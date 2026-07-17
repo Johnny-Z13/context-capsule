@@ -12,7 +12,7 @@ export function createServer(options?: { apiKey?: string; baseUrl?: string }) {
 
   const server = new McpServer({
     name: 'contextcapsule',
-    version: '0.1.0',
+    version: '0.1.3',
   })
 
   registerCreateCapsuleTool(server, client)

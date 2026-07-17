@@ -22,7 +22,7 @@ export const apiKeys = pgTable('api_keys', {
   id: text('id').primaryKey(),
   keyPrefix: text('key_prefix').notNull(),
   keyHash: text('key_hash').notNull().unique(),
-  ownerEmail: text('owner_email').notNull(),
+  ownerEmail: text('owner_email').notNull().unique(),
   tier: text('tier').notNull().default('free'),
   createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
   usageCount: integer('usage_count').default(0),

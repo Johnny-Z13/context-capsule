@@ -3,7 +3,7 @@ export interface CreateCapsuleInput {
   decisions?: string[]
   next_steps?: string[]
   payload?: Record<string, unknown>
-  refs?: Record<string, string>
+  refs?: Record<string, string | string[]>
   expires_in?: number
   idempotency_key?: string
   audience?: string
@@ -84,10 +84,30 @@ export function validateCreateCapsule(
     }
   }
 
-  // refs: optional object
+  // refs: optional object of string values, max 20 entries, 500 chars each
   if (input.refs !== undefined) {
     if (typeof input.refs !== 'object' || input.refs === null || Array.isArray(input.refs)) {
       errors.push({ field: 'refs', message: 'refs must be a JSON object' })
+    } else {
+      const entries = Object.entries(input.refs as Record<string, unknown>)
+      if (entries.length > 20) {
+        errors.push({ field: 'refs', message: 'refs must have at most 20 entries' })
+      }
+      for (const [key, value] of entries) {
+        const values = Array.isArray(value) ? value : [value]
+        if (Array.isArray(value) && value.length > 20) {
+          errors.push({ field: `refs.${key}`, message: 'each ref array must have at most 20 items' })
+        }
+        for (const v of values) {
+          if (typeof v !== 'string') {
+            errors.push({ field: `refs.${key}`, message: 'each ref value must be a string or array of strings' })
+            break
+          } else if (v.length > 500) {
+            errors.push({ field: `refs.${key}`, message: 'each ref value must be at most 500 characters' })
+            break
+          }
+        }
+      }
     }
   }
 
@@ -100,10 +120,12 @@ export function validateCreateCapsule(
     }
   }
 
-  // idempotency_key: optional string
+  // idempotency_key: optional string, max 200 chars
   if (input.idempotency_key !== undefined) {
     if (typeof input.idempotency_key !== 'string') {
       errors.push({ field: 'idempotency_key', message: 'idempotency_key must be a string' })
+    } else if (input.idempotency_key.length > 200) {
+      errors.push({ field: 'idempotency_key', message: 'idempotency_key must be at most 200 characters' })
     }
   }
 
@@ -123,7 +145,7 @@ export function validateCreateCapsule(
     decisions: input.decisions as string[] | undefined,
     next_steps: input.next_steps as string[] | undefined,
     payload: input.payload as Record<string, unknown> | undefined,
-    refs: input.refs as Record<string, string> | undefined,
+    refs: input.refs as Record<string, string | string[]> | undefined,
     expires_in: input.expires_in as number | undefined,
     idempotency_key: input.idempotency_key as string | undefined,
     audience: input.audience as string | undefined,

@@ -217,7 +217,7 @@ export function getOpenApiSpec(): object {
               default: 86400,
               description: 'TTL in seconds',
             },
-            idempotency_key: { type: 'string', description: 'Client deduplication key' },
+            idempotency_key: { type: 'string', maxLength: 200, description: 'Client deduplication key' },
             audience: { type: 'string', description: 'Intended consumer hint' },
           },
         },

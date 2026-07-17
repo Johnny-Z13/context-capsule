@@ -1,5 +1,6 @@
 import { createMiddleware } from 'hono/factory'
 import { nanoid } from 'nanoid'
+import { errorResponse } from '../lib/errors.js'
 
 export const cors = createMiddleware(async (c, next) => {
   c.header('Access-Control-Allow-Origin', '*')
@@ -26,10 +27,7 @@ export function bodyLimit(maxBytes: number) {
   return createMiddleware(async (c, next) => {
     const contentLength = c.req.header('content-length')
     if (contentLength && parseInt(contentLength, 10) > maxBytes) {
-      return c.json(
-        { error: 'payload_too_large', message: `Request body must be ${Math.floor(maxBytes / 1024)}KB or smaller.` },
-        413
-      )
+      return errorResponse(c, 413, 'payload_too_large', `Request body must be ${Math.floor(maxBytes / 1024)}KB or smaller.`)
     }
     await next()
   })

@@ -4,6 +4,9 @@ import { getTestDb } from '../helpers.js'
 import { apiKeys } from '../../src/db/schema.js'
 import { eq } from 'drizzle-orm'
 
+// These tests hit the database in DATABASE_URL — skip when it isn't configured
+const hasDb = !!process.env.DATABASE_URL
+
 const createdEmails: string[] = []
 let ipCounter = 0
 
@@ -20,13 +23,14 @@ function post(path: string, body: Record<string, unknown>) {
 }
 
 afterAll(async () => {
+  if (!hasDb) return
   const db = getTestDb()
   for (const email of createdEmails) {
     await db.delete(apiKeys).where(eq(apiKeys.ownerEmail, email))
   }
 })
 
-describe('POST /v1/auth/signup', () => {
+describe.skipIf(!hasDb)('POST /v1/auth/signup', () => {
   it('creates an API key for a new email', async () => {
     const email = `auth-test-${Date.now()}@contextcapsule.ai`
     createdEmails.push(email)

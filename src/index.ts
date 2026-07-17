@@ -10,9 +10,10 @@ import { renderLlmsTxt } from './views/llms-txt.js'
 import { renderLlmsFullTxt } from './views/llms-full-txt.js'
 import { getOpenApiSpec } from './views/openapi.js'
 import { getMcpDiscovery } from './views/mcp-json.js'
-import { renderOgImageSvg } from './views/og-image.js'
+import { getOgImagePng } from './views/og-image-png.js'
 import { renderCapsulePage } from './views/capsule-page.js'
 import { cors, requestId, bodyLimit, securityHeaders } from './middleware/security.js'
+import { errorResponse } from './lib/errors.js'
 import { requestLogger } from './middleware/logger.js'
 
 const app = new Hono()
@@ -168,9 +169,9 @@ app.get('/sitemap.xml', (c) => {
 })
 
 app.get('/og-image.png', (c) => {
-  c.header('Content-Type', 'image/svg+xml')
+  c.header('Content-Type', 'image/png')
   c.header('Cache-Control', 'public, max-age=86400')
-  return c.body(renderOgImageSvg())
+  return c.body(getOgImagePng())
 })
 
 // Google Search Console verification
@@ -182,14 +183,14 @@ app.get('/google72aa1534e21928da.html', (c) => {
 app.get('/dev/console', (c) => {
   const secret = c.req.query('key')
   if (!secret || secret !== process.env.DEV_SECRET) {
-    return c.json({ error: 'not_found', message: 'Route not found.' }, 404)
+    return errorResponse(c, 404, 'not_found', 'Route not found.')
   }
   return c.html(renderDevConsole())
 })
 
 // 404 fallback
 app.notFound((c) => {
-  return c.json({ error: 'not_found', message: 'Route not found.' }, 404)
+  return errorResponse(c, 404, 'not_found', 'Route not found.')
 })
 
 export default app

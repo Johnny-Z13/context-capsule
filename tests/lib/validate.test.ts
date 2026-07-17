@@ -156,6 +156,28 @@ describe('validateCreateCapsule', () => {
     expect(isValidationError(result)).toBe(true)
   })
 
+  it('accepts refs with string-array values (receipt_ids)', () => {
+    const result = validateCreateCapsule({ summary: 'ok', refs: { receipt_ids: ['ps_1', 'ps_2'] } })
+    expect(isValidationError(result)).toBe(false)
+  })
+
+  it('rejects refs with non-string values', () => {
+    const result = validateCreateCapsule({ summary: 'ok', refs: { nested: { a: 1 } } })
+    expect(isValidationError(result)).toBe(true)
+    expect((result as ValidationError[]).some((e) => e.field === 'refs.nested')).toBe(true)
+  })
+
+  it('rejects refs with more than 20 entries', () => {
+    const refs = Object.fromEntries(Array.from({ length: 21 }, (_, i) => [`k${i}`, 'v']))
+    const result = validateCreateCapsule({ summary: 'ok', refs })
+    expect(isValidationError(result)).toBe(true)
+  })
+
+  it('rejects ref values over 500 chars', () => {
+    const result = validateCreateCapsule({ summary: 'ok', refs: { long: 'a'.repeat(501) } })
+    expect(isValidationError(result)).toBe(true)
+  })
+
   // expires_in validation
   it('rejects non-number expires_in', () => {
     const result = validateCreateCapsule({ summary: 'ok', expires_in: '3600' })
@@ -182,6 +204,16 @@ describe('validateCreateCapsule', () => {
   it('rejects non-string idempotency_key', () => {
     const result = validateCreateCapsule({ summary: 'ok', idempotency_key: 123 })
     expect(isValidationError(result)).toBe(true)
+  })
+
+  it('rejects idempotency_key over 200 chars', () => {
+    const result = validateCreateCapsule({ summary: 'ok', idempotency_key: 'a'.repeat(201) })
+    expect(isValidationError(result)).toBe(true)
+  })
+
+  it('accepts idempotency_key at exactly 200 chars', () => {
+    const result = validateCreateCapsule({ summary: 'ok', idempotency_key: 'a'.repeat(200) })
+    expect(isValidationError(result)).toBe(false)
   })
 
   // audience validation

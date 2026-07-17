@@ -39,23 +39,37 @@ authRouter.post('/signup', async (c) => {
   const key = generateApiKey()
   const keyId = generateApiKeyId()
 
-  await db.insert(apiKeys).values({
-    id: keyId,
-    keyPrefix: getKeyPrefix(key),
-    keyHash: sha256(key),
-    ownerEmail: email,
-    tier: 'free',
-    usageResetAt: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000),
-  })
+  try {
+    await db.insert(apiKeys).values({
+      id: keyId,
+      keyPrefix: getKeyPrefix(key),
+      keyHash: sha256(key),
+      ownerEmail: email,
+      tier: 'free',
+      usageResetAt: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000),
+    })
+  } catch (err) {
+    // Unique violation on owner_email — concurrent signup with the same email
+    if (String(err).includes('duplicate key')) {
+      return errorResponse(c, 409, 'email_exists', 'An API key already exists for this email. Contact support to rotate your key.')
+    }
+    throw err
+  }
 
   const source = typeof body.source === 'string' ? body.source : 'api'
 
   if (source === 'web') {
-    await sendEmail({
+    const sent = await sendEmail({
       to: email,
       subject: 'Your Context Capsule API Key',
       html: renderWelcomeEmail(key),
     })
+
+    if (!sent) {
+      // Roll back so the user can retry signup instead of being stranded keyless
+      await db.delete(apiKeys).where(eq(apiKeys.id, keyId)).catch(() => {})
+      return errorResponse(c, 502, 'email_send_failed', 'Could not send your API key email. Please try again.')
+    }
 
     return c.json({
       tier: 'free',

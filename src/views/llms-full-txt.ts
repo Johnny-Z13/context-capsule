@@ -15,7 +15,7 @@ API keys have the prefix "ak_" and are hashed with SHA-256 before storage.
 Header format:
   Authorization: Bearer ak_your_api_key
 
-Fetch endpoints are public — no auth required.
+Fetch endpoints are public — no auth required. Anyone with a capsule URL can read it, so never put secrets or credentials in capsule content.
 
 ================================================================================
 ## POST /v1/auth/signup

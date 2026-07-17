@@ -71,7 +71,7 @@ These projects share brand, stack, and patterns. Keep them consistent:
 - **Stack:** Hono v4, Drizzle ORM, Neon PostgreSQL, Vercel serverless, Vitest
 - **Middleware order:** CORS → security headers → request ID → body limit → logger
 - **Auth:** Bearer token `ak_` prefix, SHA-256 hash, prefix-based lookup
-- **Rate limiting:** In-memory sliding window, per-key and per-IP
+- **Rate limiting:** In-memory fixed window, per-key and per-IP
 - **Views:** Template literal HTML (no JSX), inline styles, no client-side JS
 - **Discovery:** llms.txt, llms-full.txt, openapi.json, mcp.json, agent.json
 - **IDs:** Prefixed nanoid (`cap_`, `ak_`, `key_`)

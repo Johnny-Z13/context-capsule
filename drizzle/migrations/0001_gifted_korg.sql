@@ -1,0 +1,1 @@
+ALTER TABLE "api_keys" ADD CONSTRAINT "api_keys_owner_email_unique" UNIQUE("owner_email");

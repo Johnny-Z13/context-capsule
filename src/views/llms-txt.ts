@@ -75,7 +75,7 @@ Short URL also works: GET https://www.contextcapsule.ai/capsule/{id}
 ## Auth
 
 All create requests require a Bearer token with the ak_ prefix.
-Fetch requests are public — no auth needed.
+Fetch requests are public — no auth needed. Anyone with a capsule URL can read it, so never put secrets or credentials in capsule content.
 
 ## Rate Limits
 

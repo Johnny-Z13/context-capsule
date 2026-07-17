@@ -138,13 +138,13 @@ export function renderDocsPage(): string {
     <div class="section">
       <p>Capsule creation requires a Bearer token. Get one via the signup endpoint. Keys use the <code>ak_</code> prefix.</p>
       <pre><code>Authorization: Bearer ak_your_api_key</code></pre>
-      <p>Fetch endpoints are public — no authentication required.</p>
+      <p>Fetch endpoints are public — no authentication required. Anyone with a capsule URL can read it, so do not put secrets or credentials in capsule content.</p>
     </div>
 
     <!-- POST /v1/capsules -->
     <h2><span class="badge badge-post">POST</span> <span class="endpoint-path">/v1/capsules</span></h2>
     <div class="section">
-      <p>Create a context capsule. Auth required. Rate limit: 60/min per API key.</p>
+      <p>Create a context capsule. Auth required. Rate limit: 60/min per API key. Free tier: 500 capsules per 30 days (429 <code>quota_exceeded</code> when reached).</p>
       <h3>Request</h3>
       <pre><code>curl -X POST https://www.contextcapsule.ai/v1/capsules \\
   -H "Authorization: Bearer ak_your_key" \\

@@ -5,6 +5,7 @@ import { eq } from 'drizzle-orm'
 import { renderCapsulePage } from '../views/capsule-page.js'
 import { renderNotFoundPage } from '../views/not-found-page.js'
 import { rateLimitByIp } from '../middleware/rate-limit.js'
+import { errorResponse } from '../lib/errors.js'
 
 const fetchRouter = new Hono()
 
@@ -27,10 +28,7 @@ fetchRouter.get('/:capsuleId', async (c) => {
       c.req.query('format') === 'json'
 
     if (wantsJson) {
-      return c.json(
-        { error: 'capsule_not_found', message: 'Capsule does not exist, has expired, or has been deleted.' },
-        404
-      )
+      return errorResponse(c, 404, 'capsule_not_found', 'Capsule does not exist, has expired, or has been deleted.')
     }
     return c.html(renderNotFoundPage(), 404)
   }

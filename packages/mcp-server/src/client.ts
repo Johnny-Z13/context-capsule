@@ -17,7 +17,7 @@ export class ContextCapsuleClient {
     decisions?: string[]
     next_steps?: string[]
     payload?: Record<string, unknown>
-    refs?: Record<string, string | undefined>
+    refs?: Record<string, string | string[] | undefined>
     expires_in?: number
     idempotency_key?: string
     audience?: string

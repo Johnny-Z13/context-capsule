@@ -2,16 +2,21 @@ import { describe, it, expect, beforeAll, afterAll } from 'vitest'
 import app from '../../src/index.js'
 import { seedTestApiKey, cleanupTestApiKey } from '../helpers.js'
 
+// These tests hit the database in DATABASE_URL — skip when it isn't configured
+const hasDb = !!process.env.DATABASE_URL
+
 let apiKey: string
 let keyId: string
 
 beforeAll(async () => {
+  if (!hasDb) return
   const result = await seedTestApiKey()
   apiKey = result.key
   keyId = result.keyId
 })
 
 afterAll(async () => {
+  if (!hasDb) return
   await cleanupTestApiKey(keyId)
 })
 
@@ -26,7 +31,7 @@ function post(path: string, body: Record<string, unknown>, key = apiKey) {
   })
 }
 
-describe('POST /v1/capsules', () => {
+describe.skipIf(!hasDb)('POST /v1/capsules', () => {
   it('creates a capsule with required fields', async () => {
     const res = await post('/v1/capsules', { summary: 'Test capsule from integration test' })
     expect(res.status).toBe(201)

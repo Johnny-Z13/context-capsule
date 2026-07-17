@@ -2,11 +2,15 @@ import { describe, it, expect, beforeAll, afterAll } from 'vitest'
 import app from '../../src/index.js'
 import { seedTestApiKey, cleanupTestApiKey } from '../helpers.js'
 
+// These tests hit the database in DATABASE_URL — skip when it isn't configured
+const hasDb = !!process.env.DATABASE_URL
+
 let apiKey: string
 let keyId: string
 let capsuleId: string
 
 beforeAll(async () => {
+  if (!hasDb) return
   const result = await seedTestApiKey()
   apiKey = result.key
   keyId = result.keyId
@@ -28,10 +32,11 @@ beforeAll(async () => {
 })
 
 afterAll(async () => {
+  if (!hasDb) return
   await cleanupTestApiKey(keyId)
 })
 
-describe('GET /v1/capsules/:id', () => {
+describe.skipIf(!hasDb)('GET /v1/capsules/:id', () => {
   it('returns capsule as JSON', async () => {
     const res = await app.request(`/v1/capsules/${capsuleId}`, {
       headers: { 'Accept': 'application/json' },
