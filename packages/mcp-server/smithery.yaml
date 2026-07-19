@@ -1,8 +1,8 @@
 name: contextcapsule
 description: >-
-  Portable execution context for AI agent workflows.
-  Create and fetch structured context capsules that carry
-  decisions, next steps, and working memory between agents and sessions.
+  Optional hosted transport for short-lived coding handoffs.
+  Create and fetch public-by-URL capsules carrying status,
+  decisions, verification limits, and next steps between coding agents.
 icon: package
 author: contextcapsule
 sourceUrl: https://github.com/Johnny-Z13/context-capsule/tree/main/packages/mcp-server
@@ -14,5 +14,5 @@ startCommand:
     - dist/bin/cli.js
   env:
     CONTEXTCAPSULE_API_KEY:
-      description: Your Context Capsule API key (get one at contextcapsule.ai or use the signup tool)
+      description: Your Context Capsule API key for creating hosted capsules
       required: false

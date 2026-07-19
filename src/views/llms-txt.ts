@@ -1,94 +1,64 @@
 export function renderLlmsTxt(): string {
   return `# Context Capsule
 
-> Portable context for agent workflows. Create structured, compressed, ephemeral handoff packets.
+> Hand off a coding task between AI agents without starting over.
 
-## Quick Start
+Context Capsule is primarily an open-source, local-first Agent Skill. It captures bounded repository state, decisions, constraints, verification, blockers, and one next action. A receiving agent checks freshness before trusting repo-specific details.
 
-### 1. Get an API key
+## Install the skill
 
-POST https://www.contextcapsule.ai/v1/auth/signup
-Content-Type: application/json
+npx skills add Johnny-Z13/context-capsule --skill contextcapsule-handoff
 
-{"email": "you@example.com"}
+Skill source: https://github.com/Johnny-Z13/context-capsule/tree/main/.agents/skills/contextcapsule-handoff
 
-Response: {"api_key": "ak_..."}
+Use the skill when a user asks to:
 
-### 2. Create a capsule
+- hand work from Codex to Claude Code, Cursor, or another coding agent
+- stop a coding session and resume it later without rediscovery
+- create or inspect a structured coding handoff
+- check whether an existing handoff is compatible, stale, mismatched, or unverifiable
 
-POST https://www.contextcapsule.ai/v1/capsules
-Authorization: Bearer ak_your_key
-Content-Type: application/json
+The local workflow requires no account, API key, or upload. Ask before writing .contextcapsule/, changing ignore rules, or uploading.
 
-{
-  "summary": "Refactored auth module to use JWT tokens",
-  "decisions": [
-    "Chose RS256 over HS256 for token signing",
-    "Set token expiry to 15 minutes"
-  ],
-  "next_steps": [
-    "Implement refresh token rotation",
-    "Add rate limiting to token endpoint"
-  ],
-  "payload": {"files_changed": ["src/auth.ts", "src/middleware.ts"]},
-  "refs": {
-    "workflow_id": "wf_abc123",
-    "agent_id": "agent_codegen",
-    "session_id": "sess_xyz"
-  },
-  "expires_in": 3600
-}
+## Handoff contract
 
-Response: {"id": "cap_...", "short_url": "https://www.contextcapsule.ai/capsule/cap_...", "expires_at": "..."}
+- schema_version: coding-handoff/v1
+- objective: the intended outcome
+- status_summary: complete, partial, unverified, and out-of-scope work
+- repository: remote, branch, HEAD, working-tree state, fingerprint, changed filenames
+- decisions and constraints: choices the next agent must preserve
+- verification: command, result, timestamp, and source (observed or reported)
+- blockers: authority, credentials, people, or external state still required
+- next_action: one bounded step
+- references: optional ProofSlip IDs, issues, and pull requests
+- default expiry: 24 hours
 
-### 3. Fetch a capsule
+Do not include source-file contents or secrets in automatically captured repository state. A secret-pattern check is a guardrail, not a guarantee.
 
-GET https://www.contextcapsule.ai/v1/capsules/{id}
+## ProofSlip connection
 
-No auth required. Returns the full capsule JSON.
+Context Capsule is navigational: what is the situation and what should happen next?
+ProofSlip is evidential: what did a release environment attest, and can it be checked?
 
-Short URL also works: GET https://www.contextcapsule.ai/capsule/{id}
+A capsule may reference ProofSlip IDs. A reference does not turn reported context into verified evidence. ProofSlip: https://www.proofslip.ai
 
-## Create Capsule Schema
+## Optional hosted sharing API
 
-| Field            | Type          | Required | Constraints                    |
-|------------------|---------------|----------|--------------------------------|
-| summary          | string        | yes      | max 500 chars                  |
-| decisions        | string[]      | no       | array of strings               |
-| next_steps       | string[]      | no       | array of strings               |
-| payload          | object        | no       | max 32KB JSON                  |
-| refs             | object        | no       | see below                      |
-| expires_in       | number        | no       | 60-604800 seconds, default 86400 |
-| idempotency_key  | string        | no       | for deduplication              |
-| audience         | string        | no       | hint for consumers             |
+Use the API only when the user explicitly wants a short-lived URL. Hosted capsules are public to anyone with the URL. Never upload secrets, credentials, private source, or customer data.
 
-### Refs Object
+1. Signup: POST https://www.contextcapsule.ai/v1/auth/signup
+2. Create: POST https://www.contextcapsule.ai/v1/capsules with Bearer ak_...
+3. Fetch JSON: GET https://www.contextcapsule.ai/v1/capsules/{capsule_id}?format=json
 
-| Field              | Type     |
-|--------------------|----------|
-| workflow_id        | string   |
-| agent_id           | string   |
-| session_id         | string   |
-| parent_capsule_id  | string   |
-| receipt_ids        | string[] |
-
-## Auth
-
-All create requests require a Bearer token with the ak_ prefix.
-Fetch requests are public — no auth needed. Anyone with a capsule URL can read it, so never put secrets or credentials in capsule content.
-
-## Rate Limits
-
-- Create: 60/min per API key
-- Fetch: 120/min per IP
-- Signup: 5/min per IP
+Create responses use capsule_id and capsule_url. Hosted capsules expire after 86400 seconds by default and 604800 seconds maximum.
 
 ## Discovery
 
-- API docs: https://www.contextcapsule.ai/docs
-- Full reference: https://www.contextcapsule.ai/llms-full.txt
-- OpenAPI spec: https://www.contextcapsule.ai/.well-known/openapi.json
-- MCP discovery: https://www.contextcapsule.ai/.well-known/mcp.json
-- MCP server: npx -y @contextcapsule/mcp-server
+- Website: https://www.contextcapsule.ai
+- Source: https://github.com/Johnny-Z13/context-capsule
+- Hosted API docs: https://www.contextcapsule.ai/docs
+- Full machine reference: https://www.contextcapsule.ai/llms-full.txt
+- OpenAPI: https://www.contextcapsule.ai/.well-known/openapi.json
+- Optional MCP: npx -y @contextcapsule/mcp-server
 `
 }

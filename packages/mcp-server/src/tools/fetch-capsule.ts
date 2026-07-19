@@ -8,9 +8,9 @@ export function registerFetchCapsuleTool(
 ) {
   server.tool(
     'fetch_capsule',
-    'Fetch a Context Capsule to resume work from where another agent left off. ' +
+    'Fetch a hosted Context Capsule to inspect a short-lived coding handoff. ' +
       'Returns the full capsule data: summary, decisions, next_steps, payload, and refs. ' +
-      'Use this to pick up execution context from a previous session or agent. ' +
+      'Check repository state and freshness before trusting repo-specific claims. ' +
       'No API key required.',
     {
       capsule_id: z

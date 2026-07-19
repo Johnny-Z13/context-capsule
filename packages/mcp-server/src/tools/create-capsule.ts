@@ -8,10 +8,10 @@ export function registerCreateCapsuleTool(
 ) {
   server.tool(
     'create_capsule',
-    'Create a Context Capsule to hand off execution context between agents or sessions. ' +
-      'Include a summary of what happened, key decisions made, and what should happen next. ' +
-      'Capsules are structured, compressed, ephemeral context packets. ' +
-      'Returns a capsule_id and capsule_url. Capsules expire after 7 days by default.',
+    'Create a short-lived hosted coding handoff when the user explicitly wants a share URL. ' +
+      'Include the current status, key decisions, verification limits, and what should happen next. ' +
+      'The URL is public to anyone who has it, so never include secrets or credentials. ' +
+      'Returns a capsule_id and capsule_url. Capsules expire after 24 hours by default.',
     {
       summary: z
         .string()
@@ -40,7 +40,7 @@ export function registerCreateCapsuleTool(
         .min(60)
         .max(604800)
         .optional()
-        .describe('TTL in seconds (60-604800, default 604800 = 7 days)'),
+        .describe('TTL in seconds (60-604800, default 86400 = 24 hours)'),
       idempotency_key: z
         .string()
         .max(200)

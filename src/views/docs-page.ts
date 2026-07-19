@@ -7,7 +7,7 @@ export function renderDocsPage(): string {
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>API Docs — Context Capsule</title>
-  <meta name="description" content="Context Capsule API documentation. Create and fetch structured context capsules for agent handoffs.">
+  <meta name="description" content="Optional hosted sharing API for short-lived Context Capsule coding handoffs.">
   <link rel="canonical" href="https://www.contextcapsule.ai/docs">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='12' fill='%230a0a0a'/><text x='50' y='68' text-anchor='middle' font-size='52' font-family='monospace' fill='%23e0e0e0'>C</text></svg>">
   <style>
@@ -23,6 +23,7 @@ export function renderDocsPage(): string {
     }
     .container {
       max-width: 720px;
+      min-width: 0;
       margin: 0 auto;
       padding: 4rem 1.5rem;
     }
@@ -75,6 +76,7 @@ export function renderDocsPage(): string {
       background: #111;
       border: 1px solid #1a1a1a;
       border-radius: 6px;
+      max-width: 100%;
       padding: 1rem;
       overflow-x: auto;
       margin-bottom: 1rem;
@@ -93,7 +95,10 @@ export function renderDocsPage(): string {
       border: 1px solid #1a1a1a;
     }
     table {
+      display: block;
       width: 100%;
+      max-width: 100%;
+      overflow-x: auto;
       border-collapse: collapse;
       margin-bottom: 1.5rem;
       font-size: 0.8rem;
@@ -131,38 +136,47 @@ export function renderDocsPage(): string {
   <div class="container">
     <a href="/" class="back-link">← contextcapsule.ai</a>
     <h1><a href="/docs">API Documentation</a></h1>
-    <p class="subtitle">Context Capsule v1 — Portable context for agent workflows</p>
+    <p class="subtitle">Optional hosted sharing for Context Capsule coding handoffs</p>
+
+    <div class="section">
+      <p><strong style="color:#e0e0e0;font-weight:normal">Looking for the primary product?</strong> Install the local-first <a href="https://github.com/Johnny-Z13/context-capsule/tree/main/.agents/skills/contextcapsule-handoff">Context Capsule Agent Skill</a>. It requires no account or API key. Use this API only when you explicitly need a short-lived URL for another machine or person.</p>
+      <pre><code>npx skills add Johnny-Z13/context-capsule --skill contextcapsule-handoff</code></pre>
+    </div>
 
     <!-- Authentication -->
     <h2>Authentication</h2>
     <div class="section">
       <p>Capsule creation requires a Bearer token. Get one via the signup endpoint. Keys use the <code>ak_</code> prefix.</p>
       <pre><code>Authorization: Bearer ak_your_api_key</code></pre>
-      <p>Fetch endpoints are public — no authentication required. Anyone with a capsule URL can read it, so do not put secrets or credentials in capsule content.</p>
+      <p>Fetch endpoints are public — no authentication required. <strong style="color:#e0e0e0;font-weight:normal">Anyone with a capsule URL can read it.</strong> Do not put secrets, credentials, private source, or customer data in capsule content. Upload only with the user&rsquo;s explicit consent.</p>
     </div>
 
     <!-- POST /v1/capsules -->
     <h2><span class="badge badge-post">POST</span> <span class="endpoint-path">/v1/capsules</span></h2>
     <div class="section">
-      <p>Create a context capsule. Auth required. Rate limit: 60/min per API key. Free tier: 500 capsules per 30 days (429 <code>quota_exceeded</code> when reached).</p>
+      <p>Create a public-by-URL, short-lived capsule. Auth required. Rate limit: 60/min per API key. Free tier: 500 capsules per 30 days (429 <code>quota_exceeded</code> when reached). Default expiry is 24 hours.</p>
       <h3>Request</h3>
       <pre><code>curl -X POST https://www.contextcapsule.ai/v1/capsules \\
   -H "Authorization: Bearer ak_your_key" \\
   -H "Content-Type: application/json" \\
   -d '{
-    "summary": "Refactored auth module",
-    "decisions": ["Chose RS256 over HS256"],
-    "next_steps": ["Add refresh tokens"],
-    "payload": {"files": ["auth.ts"]},
-    "refs": {"workflow_id": "wf_123"},
-    "expires_in": 3600
+    "summary": "Refresh-token migration implemented; staging is not verified",
+    "decisions": ["Keep the legacy endpoint for three consumers"],
+    "next_steps": ["Run the staging smoke test", "Ask before release"],
+    "payload": {"verification": [{"command": "npm test", "result": "71 passed", "source": "observed"}]},
+    "refs": {"receipt_ids": []},
+    "expires_in": 86400
   }'</code></pre>
       <h3>Response (201)</h3>
       <pre><code>{
-  "id": "cap_...",
-  "short_url": "https://www.contextcapsule.ai/capsule/cap_...",
-  "expires_at": "2025-01-01T12:00:00.000Z",
-  "request_id": "req_..."
+  "capsule_id": "cap_...",
+  "summary": "Refresh-token migration implemented; staging is not verified",
+  "decisions": ["Keep the legacy endpoint for three consumers"],
+  "next_steps": ["Run the staging smoke test", "Ask before release"],
+  "capsule_url": "https://www.contextcapsule.ai/capsule/cap_...",
+  "created_at": "2026-04-03T12:00:00.000Z",
+  "expires_at": "2026-04-04T12:00:00.000Z",
+  "idempotency_key": null
 }</code></pre>
     </div>
 
@@ -173,15 +187,14 @@ export function renderDocsPage(): string {
       <pre><code>curl https://www.contextcapsule.ai/v1/capsules/cap_abc123</code></pre>
       <h3>Response (200)</h3>
       <pre><code>{
-  "id": "cap_abc123",
-  "summary": "Refactored auth module",
-  "decisions": ["Chose RS256 over HS256"],
-  "next_steps": ["Add refresh tokens"],
-  "payload": {"files": ["auth.ts"]},
-  "refs": {"workflow_id": "wf_123"},
-  "audience": null,
-  "created_at": "2025-01-01T11:00:00.000Z",
-  "expires_at": "2025-01-01T12:00:00.000Z"
+  "capsule_id": "cap_abc123",
+  "summary": "Refresh-token migration implemented; staging is not verified",
+  "decisions": ["Keep the legacy endpoint for three consumers"],
+  "next_steps": ["Run the staging smoke test", "Ask before release"],
+  "payload": {"verification": [{"command": "npm test", "result": "71 passed", "source": "observed"}]},
+  "refs": {"receipt_ids": []},
+  "created_at": "2026-04-03T12:00:00.000Z",
+  "expires_at": "2026-04-04T12:00:00.000Z"
 }</code></pre>
       <p>Short URL also works: <code>GET /capsule/:id</code></p>
     </div>
@@ -222,7 +235,7 @@ export function renderDocsPage(): string {
         <tr><td>refs</td><td>object</td><td>no</td><td>see below</td></tr>
         <tr><td>expires_in</td><td>number</td><td>no</td><td>60–604800s, default 86400</td></tr>
         <tr><td>idempotency_key</td><td>string</td><td>no</td><td>deduplication key</td></tr>
-        <tr><td>audience</td><td>string</td><td>no</td><td>consumer hint</td></tr>
+        <tr><td>audience</td><td>string</td><td>no</td><td>only <code>human</code>; enriches shared page metadata</td></tr>
       </table>
 
       <h3>Refs Object</h3>
@@ -232,7 +245,7 @@ export function renderDocsPage(): string {
         <tr><td>agent_id</td><td>string</td><td>Creating agent</td></tr>
         <tr><td>session_id</td><td>string</td><td>Creating session</td></tr>
         <tr><td>parent_capsule_id</td><td>string</td><td>Parent capsule (chaining)</td></tr>
-        <tr><td>receipt_ids</td><td>string[]</td><td>ProofSlip receipt IDs</td></tr>
+        <tr><td>receipt_ids</td><td>string[]</td><td>Optional ProofSlip evidence IDs; references do not make unverified claims true</td></tr>
       </table>
     </div>
 
@@ -255,7 +268,7 @@ export function renderDocsPage(): string {
     <!-- MCP Server -->
     <h2>MCP Server</h2>
     <div class="section">
-      <p>Use Context Capsule from any MCP-compatible client:</p>
+      <p>The MCP server is optional hosted transport for MCP-compatible clients. Prefer the local Agent Skill for normal coding handoffs.</p>
       <pre><code>npx -y @contextcapsule/mcp-server</code></pre>
       <p>Tools: <code>create_capsule</code>, <code>fetch_capsule</code>, <code>signup</code></p>
     </div>
@@ -276,7 +289,7 @@ export function renderDocsPage(): string {
     </div>
 
     <p style="color: #444; margin-top: 3rem; font-size: 0.75rem; text-align: center;">
-      Context Capsule — contextcapsule.ai
+      Context Capsule hosted API — contextcapsule.ai
     </p>
   </div>
 </body>

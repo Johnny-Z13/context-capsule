@@ -1,7 +1,7 @@
 {
   "name": "context-capsule",
   "version": "1.0.0",
-  "description": "Portable context for agent workflows",
+  "description": "Local-first coding handoffs for AI agents, with optional hosted sharing",
   "scripts": {
     "dev": "tsx watch src/dev.ts",
     "test": "vitest",

@@ -4,12 +4,16 @@
 [![license](https://img.shields.io/npm/l/@contextcapsule/mcp-server)](https://github.com/Johnny-Z13/context-capsule/blob/main/LICENSE)
 [![node](https://img.shields.io/node/v/@contextcapsule/mcp-server)](https://nodejs.org)
 
-MCP server for [Context Capsule](https://www.contextcapsule.ai) — portable execution context for AI agent workflows. Create and fetch structured context capsules that carry decisions, next steps, and working memory between agents and sessions.
+Optional hosted transport for [Context Capsule](https://www.contextcapsule.ai) coding handoffs. Create and fetch short-lived, public-by-URL capsules carrying status, decisions, verification limits, and next actions between coding agents.
+
+For normal repository-local handoffs, prefer the open-source [Context Capsule Agent Skill](https://github.com/Johnny-Z13/context-capsule/tree/main/.agents/skills/contextcapsule-handoff). It checks repository freshness and needs no account, API key, or upload.
+
+> Hosted capsules can be read by anyone with their URL. Ask before uploading, and never include secrets, credentials, private source, or customer data.
 
 ## Tools
 
 ### `create_capsule`
-Create a context capsule to hand off execution context between agents or sessions.
+Create a hosted context capsule only when the user explicitly wants a short-lived share URL.
 
 | Parameter | Type | Required | Description |
 |-----------|------|----------|-------------|
@@ -18,7 +22,7 @@ Create a context capsule to hand off execution context between agents or session
 | `next_steps` | string[] | No | What should happen next (max 20 items) |
 | `payload` | object | No | Structured JSON data (max 32KB) |
 | `refs` | object | No | Workflow references (workflow_id, agent_id, etc.) |
-| `expires_in` | number | No | TTL in seconds (60–604800, default 7 days) |
+| `expires_in` | number | No | TTL in seconds (60–604800, default 24 hours) |
 | `idempotency_key` | string | No | Prevents duplicate capsules on retry |
 | `audience` | "human" | No | Enrich view page with social cards |
 
@@ -45,13 +49,14 @@ Get a free API key (500 capsules/month).
 ## Usage Example
 
 ```
-You: "Create a capsule summarizing the database migration we just finished"
+You: "Create a hosted capsule for the migration handoff and share the URL"
 
 Agent calls create_capsule:
-  summary: "Migrated user table — split into users + profiles with dual-write"
-  decisions: ["Used addColumn for backward compat", "2-week transition period"]
-  next_steps: ["Run integration tests", "Update API serializers"]
-  refs: { workflow_id: "migration-456", agent_id: "schema-agent" }
+  summary: "Migration implemented; staging is not verified"
+  decisions: ["Keep the legacy endpoint for three consumers"]
+  next_steps: ["Run the staging smoke test", "Ask before release"]
+  payload: { verification: [{ command: "npm test", result: "71 passed", source: "observed" }] }
+  refs: { receipt_ids: [] }
 
 → Returns capsule_id and capsule_url
 
@@ -61,7 +66,7 @@ Agent calls fetch_capsule:
   capsule_id: "cap_abc123"
 
 → Returns full context: summary, decisions, next_steps, payload, refs
-→ Agent picks up exactly where the previous session left off
+→ Agent inspects the handoff, then checks current repository state before continuing
 ```
 
 ## Setup

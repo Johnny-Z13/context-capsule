@@ -1,7 +1,7 @@
 {
   "name": "@contextcapsule/mcp-server",
   "version": "0.1.3",
-  "description": "MCP server for Context Capsule — portable execution context for AI agent workflows",
+  "description": "Optional hosted transport for short-lived Context Capsule coding handoffs",
   "type": "module",
   "bin": {
     "contextcapsule-mcp": "dist/bin/cli.js"

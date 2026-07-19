@@ -1,7 +1,7 @@
 export function getMcpDiscovery(): object {
   return {
     name: 'Context Capsule',
-    description: 'Portable context for agent workflows. Create, fetch, and manage structured handoff capsules.',
+    description: 'Optional hosted transport for short-lived coding handoffs. Public by URL; never include secrets.',
     url: 'https://www.contextcapsule.ai',
     version: '1.0.0',
     tools: [

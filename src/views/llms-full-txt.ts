@@ -1,272 +1,193 @@
 export function renderLlmsFullTxt(): string {
-  return `# Context Capsule — Full API Reference
+  return `# Context Capsule — full agent reference
 
-> Portable context for agent workflows. Create structured, compressed, ephemeral handoff packets.
-> Website: https://www.contextcapsule.ai
-> Sister product: ProofSlip (proofslip.ai)
+> Switch coding agents without losing the thread.
 
-================================================================================
-## Authentication
-================================================================================
+## Product boundary
 
-All capsule creation requests require a Bearer token.
-API keys have the prefix "ak_" and are hashed with SHA-256 before storage.
+Context Capsule is a structured coding handoff, not a transcript, general memory system, autonomous orchestration layer, or claim-verification service.
 
-Header format:
-  Authorization: Bearer ak_your_api_key
+Primary product: local Agent Skill and coding-handoff/v1 format.
+Optional transport: hosted public-by-URL capsule API and MCP server.
+Evidence partner: ProofSlip release proofs, referenced only when independent evidence exists.
 
-Fetch endpoints are public — no auth required. Anyone with a capsule URL can read it, so never put secrets or credentials in capsule content.
+## Install
 
-================================================================================
-## POST /v1/auth/signup
-================================================================================
+npx skills add Johnny-Z13/context-capsule --skill contextcapsule-handoff
 
-Get a free API key. Public endpoint.
+The skill works with Codex, Claude Code, Cursor, and other skills-compatible coding agents. Review the readable skill source before installation:
+https://github.com/Johnny-Z13/context-capsule/tree/main/.agents/skills/contextcapsule-handoff
 
-Rate limit: 5/min per IP
+## Local commands
 
-Request:
-  POST https://www.contextcapsule.ai/v1/auth/signup
-  Content-Type: application/json
+The bundled Node helper has no package dependencies.
 
-  {"email": "you@example.com"}
+Capture read-only repository metadata:
 
-Success response (201):
-  {
-    "api_key": "ak_...",
-    "message": "Store this key securely — it cannot be retrieved later."
-  }
+node .agents/skills/contextcapsule-handoff/scripts/contextcapsule.mjs capture --repo /path/to/repo
 
-Error responses:
-  400 — validation_error: Invalid email format
-  409 — email_exists: An account with this email already exists
-  429 — rate_limited: Too many signup attempts
+Create a handoff after preparing a semantic input JSON file and receiving write consent:
 
-curl example:
-  curl -X POST https://www.contextcapsule.ai/v1/auth/signup \\
-    -H "Content-Type: application/json" \\
-    -d '{"email": "agent@example.com"}'
+node .agents/skills/contextcapsule-handoff/scripts/contextcapsule.mjs create \\
+  --repo /path/to/repo \\
+  --input /path/to/handoff-input.json
 
-================================================================================
-## POST /v1/capsules
-================================================================================
+Default output:
+- .contextcapsule/latest.json
+- .contextcapsule/latest.md
+- previous.json and previous.md when replacing an existing handoff
 
-Create a context capsule. Auth required.
+Resume only after classifying freshness:
 
-Rate limit: 60/min per API key
+node .agents/skills/contextcapsule-handoff/scripts/contextcapsule.mjs resume \\
+  --repo /path/to/repo \\
+  --capsule /path/to/repo/.contextcapsule/latest.json
 
-Request:
-  POST https://www.contextcapsule.ai/v1/capsules
-  Authorization: Bearer ak_your_key
-  Content-Type: application/json
+Classifications:
+- compatible: repository identity and recorded fingerprint still match
+- stale: same repository, but branch, HEAD, working tree, files, or expiry changed
+- mismatched: repository identity differs
+- unverifiable: current repository state could not be inspected
 
-  {
-    "summary": "Refactored auth module to use JWT tokens",
-    "decisions": [
-      "Chose RS256 over HS256 for token signing",
-      "Set token expiry to 15 minutes"
-    ],
-    "next_steps": [
-      "Implement refresh token rotation",
-      "Add rate limiting to token endpoint"
-    ],
-    "payload": {
-      "files_changed": ["src/auth.ts", "src/middleware.ts"],
-      "test_results": {"passed": 42, "failed": 0}
-    },
-    "refs": {
-      "workflow_id": "wf_abc123",
-      "agent_id": "agent_codegen",
-      "session_id": "sess_xyz",
-      "parent_capsule_id": "cap_parent",
-      "receipt_ids": ["rcpt_1", "rcpt_2"]
-    },
-    "expires_in": 3600,
-    "idempotency_key": "unique-request-id-123",
-    "audience": "deployment-agent"
-  }
+Safe behavior:
+- compatible: continue, but still respect blockers and human gates
+- stale: retain objective, decisions, and constraints; re-check changed files, verification, blockers, and next action
+- mismatched: do not apply repository-specific claims
+- unverifiable: state the limitation and inspect manually before acting
 
-Success response (201):
-  {
-    "id": "cap_...",
-    "short_url": "https://www.contextcapsule.ai/capsule/cap_...",
-    "expires_at": "2025-01-01T12:00:00.000Z",
-    "request_id": "req_..."
-  }
+## coding-handoff/v1 semantic input
 
-Error responses:
-  400 — validation_error: Missing or invalid fields
-  401 — unauthorized: Missing or invalid API key
-  409 — idempotency_conflict: Same key used with different body
-  429 — rate_limited: Too many create requests
+{
+  "objective": "Finish the refresh-token migration safely",
+  "status_summary": "Implementation complete; staging and production are not verified",
+  "decisions": ["Keep the legacy endpoint for three consumers"],
+  "constraints": ["Do not publish without human approval"],
+  "verification": [
+    {
+      "command": "npm test -- --run",
+      "result": "71 passed",
+      "observed_at": "2026-07-19T12:04:00.000Z",
+      "source": "observed"
+    }
+  ],
+  "blockers": ["Staging credentials require a human owner"],
+  "next_action": "Run the staging smoke test",
+  "references": {
+    "proofslip_ids": [],
+    "issues": [],
+    "pull_requests": []
+  },
+  "expires_in_seconds": 86400
+}
 
-### Field Reference
+observed means the authoring agent actually saw the command result. reported means another source supplied the claim. Neither is independent provider proof.
 
-| Field            | Type     | Required | Constraints                          |
-|------------------|----------|----------|--------------------------------------|
-| summary          | string   | yes      | max 500 characters                   |
-| decisions        | string[] | no       | array of decision strings            |
-| next_steps       | string[] | no       | array of next step strings           |
-| payload          | object   | no       | arbitrary JSON, max 32KB             |
-| refs             | object   | no       | reference links (see below)          |
-| expires_in       | number   | no       | 60–604800 seconds (default 86400)    |
-| idempotency_key  | string   | no       | client-provided deduplication key    |
-| audience         | string   | no       | hint for intended consumer           |
+Automatic repository capture records remote identity without embedded credentials, root name, branch, HEAD SHA, clean or dirty state, a fingerprint, and bounded changed filenames. It does not read or copy source-file contents. .contextcapsule/ artifacts are excluded from freshness fingerprints so a capsule does not stale itself.
 
-### Refs Object
+The helper rejects common credential patterns and credential-like keys before writing. This is defense in depth, not a complete secret scanner. Review handoff content before sharing.
 
-| Field              | Type     | Description                        |
-|--------------------|----------|------------------------------------|
-| workflow_id        | string   | Workflow this capsule belongs to   |
-| agent_id           | string   | Agent that created this capsule    |
-| session_id         | string   | Session that created this capsule  |
-| parent_capsule_id  | string   | Parent capsule ID (for chaining)   |
-| receipt_ids        | string[] | Receipt IDs from ProofSlip         |
+## Hosted API boundary
 
-### Idempotency Protocol
+Use hosted sharing only after explicit consent. Anyone with a capsule URL can fetch it. There is no per-view authorization.
 
-Include an idempotency_key in the request body. If a capsule was already created
-with the same key by the same API key, the original capsule is returned (200).
-If the same key is used with a different body, a 409 idempotency_conflict error
-is returned.
+Base URL: https://www.contextcapsule.ai
+Create authentication: Authorization: Bearer ak_your_key
+Fetch authentication: none
+Default TTL: 86400 seconds (24 hours)
+Allowed TTL: 60 to 604800 seconds
+Create rate limit: 60/minute per API key
+Fetch rate limit: 120/minute per IP
+Signup rate limit: 5/minute per IP
 
-curl example:
-  curl -X POST https://www.contextcapsule.ai/v1/capsules \\
-    -H "Authorization: Bearer ak_your_key" \\
-    -H "Content-Type: application/json" \\
-    -d '{
-      "summary": "Completed database migration",
-      "decisions": ["Used pgroll for zero-downtime migration"],
-      "expires_in": 7200
-    }'
+### Signup
 
-================================================================================
-## GET /v1/capsules/:id
-================================================================================
+POST /v1/auth/signup
+Content-Type: application/json
 
-Fetch a capsule by ID. Public — no auth required.
+{"email":"you@example.com"}
 
-Rate limit: 120/min per IP
+201 response:
 
-Request:
-  GET https://www.contextcapsule.ai/v1/capsules/cap_abc123
+{"api_key":"ak_...","tier":"free","message":"Save this key now. It cannot be retrieved later."}
 
-Success response (200):
-  {
-    "id": "cap_abc123",
-    "summary": "Refactored auth module to use JWT tokens",
-    "decisions": ["Chose RS256 over HS256"],
-    "next_steps": ["Implement refresh token rotation"],
-    "payload": {"files_changed": ["src/auth.ts"]},
-    "refs": {"workflow_id": "wf_abc123", "agent_id": "agent_codegen"},
-    "audience": "deployment-agent",
-    "created_at": "2025-01-01T11:00:00.000Z",
-    "expires_at": "2025-01-01T12:00:00.000Z"
-  }
+### Create a hosted capsule
 
-Error responses:
-  404 — capsule_not_found: Capsule not found or expired
-  429 — rate_limited: Too many fetch requests
+POST /v1/capsules
+Authorization: Bearer ak_your_key
+Content-Type: application/json
 
-curl example:
-  curl https://www.contextcapsule.ai/v1/capsules/cap_abc123
+{
+  "summary": "Refresh-token migration implemented; staging is not verified",
+  "decisions": ["Keep the legacy endpoint for three consumers"],
+  "next_steps": ["Run the staging smoke test", "Ask before release"],
+  "payload": {
+    "schema_version": "coding-handoff/v1",
+    "verification": [{"command":"npm test","result":"71 passed","source":"observed"}],
+    "blockers": ["Staging credentials require a human owner"]
+  },
+  "refs": {"receipt_ids": []},
+  "expires_in": 86400,
+  "idempotency_key": "refresh-handoff-81d9c1a",
+  "audience": "human"
+}
 
-================================================================================
-## GET /capsule/:id (Short URL)
-================================================================================
+201 response:
 
-Alias for GET /v1/capsules/:id. Same behavior, same response.
+{
+  "capsule_id": "cap_...",
+  "summary": "Refresh-token migration implemented; staging is not verified",
+  "decisions": ["Keep the legacy endpoint for three consumers"],
+  "next_steps": ["Run the staging smoke test", "Ask before release"],
+  "capsule_url": "https://www.contextcapsule.ai/capsule/cap_...",
+  "created_at": "2026-07-19T12:05:00.000Z",
+  "expires_at": "2026-07-20T12:05:00.000Z",
+  "idempotency_key": "refresh-handoff-81d9c1a",
+  "audience": "human"
+}
 
-curl example:
-  curl https://www.contextcapsule.ai/capsule/cap_abc123
+### Fetch
 
-================================================================================
-## POST /cron/cleanup
-================================================================================
+GET /v1/capsules/{capsule_id}?format=json
+GET /capsule/{capsule_id}?format=json
 
-Hourly cleanup of expired capsules. Protected by a shared secret.
+JSON response fields:
+- capsule_id
+- summary
+- decisions
+- next_steps
+- payload
+- refs
+- created_at
+- expires_at
+- audience when present
 
-Header:
-  Authorization: Bearer CRON_SECRET
+Without format=json or an Accept: application/json header, fetch routes return the human-readable HTML view.
 
-Success response (200):
-  {"deleted": 42}
+### Errors
 
-Error responses:
-  401 — unauthorized: Invalid cron secret
+Errors use:
 
-================================================================================
-## GET /health
-================================================================================
+{"error":"code","message":"description","request_id":"req_..."}
 
-Health check endpoint.
+Relevant codes: validation_error, unauthorized, capsule_not_found, idempotency_conflict, email_exists, quota_exceeded, rate_limited, internal_error.
 
-Response (200):
-  {"status": "ok"}
+## ProofSlip references
 
-================================================================================
-## Error Codes
-================================================================================
+Use references.proofslip_ids locally or refs.receipt_ids in the hosted legacy schema. ProofSlip answers what a provider attested about a release. Context Capsule answers what the next agent needs to know and do.
 
-| Code                  | HTTP | Description                                   |
-|-----------------------|------|-----------------------------------------------|
-| validation_error      | 400  | Request body failed validation                |
-| unauthorized          | 401  | Missing or invalid auth credentials           |
-| capsule_not_found     | 404  | Capsule does not exist or has expired         |
-| idempotency_conflict  | 409  | Same idempotency key, different request body  |
-| email_exists          | 409  | Email already registered                      |
-| rate_limited          | 429  | Rate limit exceeded                           |
-| internal_error        | 500  | Unexpected server error                       |
+Do not label a handoff claim verified merely because it includes a ProofSlip ID. Fetch and inspect the referenced proof, separate provider evidence from submitted context, and report limitations.
 
-All error responses include:
-  {
-    "error": "error_code",
-    "message": "Human-readable description",
-    "request_id": "req_..."
-  }
+ProofSlip: https://www.proofslip.ai
 
-================================================================================
-## Rate Limits
-================================================================================
+## Source and discovery
 
-| Endpoint          | Limit      | Scope    |
-|-------------------|------------|----------|
-| POST /v1/capsules | 60/min     | API key  |
-| GET /v1/capsules  | 120/min    | IP       |
-| POST /v1/auth     | 5/min      | IP       |
-
-Rate limit headers are included in responses:
-  X-RateLimit-Limit: 60
-  X-RateLimit-Remaining: 59
-  X-RateLimit-Reset: 1704067200
-
-================================================================================
-## Discovery Endpoints
-================================================================================
-
-| URL                                  | Format   | Description              |
-|--------------------------------------|----------|--------------------------|
-| /docs                                | HTML     | API documentation page   |
-| /llms.txt                            | text     | LLM-friendly summary     |
-| /llms-full.txt                       | text     | Full API reference (this)|
-| /.well-known/openapi.json            | JSON     | OpenAPI 3.1 spec         |
-| /.well-known/mcp.json                | JSON     | MCP discovery manifest   |
-| /.well-known/agent.json              | JSON     | Agent discovery manifest |
-| /robots.txt                          | text     | Robots & discovery hints |
-| /sitemap.xml                         | XML      | Sitemap                  |
-
-================================================================================
-## MCP Server
-================================================================================
-
-Install and run the MCP server:
-  npx -y @contextcapsule/mcp-server
-
-Package: @contextcapsule/mcp-server
-
-Tools provided:
-  - create_capsule: Create a context capsule
-  - fetch_capsule: Fetch a capsule by ID
-  - signup: Get a free API key
+- Website: https://www.contextcapsule.ai
+- GitHub: https://github.com/Johnny-Z13/context-capsule
+- Skill: https://github.com/Johnny-Z13/context-capsule/tree/main/.agents/skills/contextcapsule-handoff
+- API docs: https://www.contextcapsule.ai/docs
+- OpenAPI: https://www.contextcapsule.ai/.well-known/openapi.json
+- MCP manifest: https://www.contextcapsule.ai/.well-known/mcp.json
+- Agent manifest: https://www.contextcapsule.ai/.well-known/agent.json
+- MCP package: @contextcapsule/mcp-server
 `
 }

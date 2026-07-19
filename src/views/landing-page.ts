@@ -6,14 +6,14 @@ export function renderLandingPage(): string {
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Context Capsule — Portable Context for Agent Workflows</title>
-  <meta name="description" content="Free API for AI agent handoffs. Create structured, compressed context packets that agents pass between sessions. Less context window waste, better multi-agent coordination. Create, fetch, expire.">
-  <meta name="keywords" content="AI agent context, agent handoff API, multi-agent coordination, context compression, agent working memory, LLM context management, agent workflow handoff, portable agent context, structured context API, ephemeral context packets">
+  <title>Context Capsule — Coding handoffs that survive agent switches</title>
+  <meta name="description" content="Hand off a coding task between Codex, Claude Code, Cursor, and other agents without starting over. Local-first, structured, freshness-checked, and open source.">
+  <meta name="keywords" content="coding agent handoff, Codex handoff, Claude Code handoff, Cursor handoff, Agent Skill, AI coding workflow, structured handoff">
   <meta name="robots" content="index, follow">
-  <meta name="author" content="Context Capsule">
+  <meta name="author" content="Z13Labs">
   <link rel="canonical" href="https://www.contextcapsule.ai">
-  <meta property="og:title" content="Context Capsule — Portable Context for Agent Workflows">
-  <meta property="og:description" content="Free handoff API for AI agents. Structured, compressed context packets that expire. Less window waste, better coordination. Create, fetch, expire.">
+  <meta property="og:title" content="Context Capsule — Switch coding agents without losing the thread">
+  <meta property="og:description" content="A local-first Agent Skill for structured, freshness-checked coding handoffs.">
   <meta property="og:image" content="https://www.contextcapsule.ai/og-image.png">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
@@ -21,8 +21,8 @@ export function renderLandingPage(): string {
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="Context Capsule">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Context Capsule — Portable Context for Agent Workflows">
-  <meta name="twitter:description" content="Free handoff API for AI agents. Structured, compressed context packets that expire. Less window waste, better coordination.">
+  <meta name="twitter:title" content="Context Capsule — Switch coding agents without losing the thread">
+  <meta name="twitter:description" content="Local-first coding handoffs for Codex, Claude Code, Cursor, and other skills-compatible agents.">
   <meta name="twitter:image" content="https://www.contextcapsule.ai/og-image.png">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='12' fill='%230a0a0a'/><text x='50' y='68' text-anchor='middle' font-size='52' font-family='monospace' fill='%23e0e0e0'>C</text></svg>">
   <script type="application/ld+json">
@@ -30,982 +30,456 @@ export function renderLandingPage(): string {
     "@context": "https://schema.org",
     "@type": "SoftwareApplication",
     "name": "Context Capsule",
-    "description": "Free AI agent handoff API. Create structured, compressed context packets that agents pass between sessions. Prevents context loss, reduces token waste, and enables clean multi-agent coordination.",
+    "description": "An open-source, local-first Agent Skill for structured coding handoffs between AI coding agents.",
     "url": "https://www.contextcapsule.ai",
     "applicationCategory": "DeveloperApplication",
     "operatingSystem": "Any",
-    "keywords": "AI agent context, agent handoff, context compression, multi-agent coordination, ephemeral context",
+    "isAccessibleForFree": true,
+    "codeRepository": "https://github.com/Johnny-Z13/context-capsule",
     "creator": {
       "@type": "Organization",
-      "name": "Context Capsule",
-      "url": "https://www.contextcapsule.ai"
-    },
-    "offers": {
-      "@type": "Offer",
-      "price": "0",
-      "priceCurrency": "USD",
-      "description": "Free tier — 500 capsules per month"
+      "name": "Z13Labs",
+      "url": "https://z13labs.com"
     }
   }
   </script>
   <style>
     ${FONT_FACE_CSS}
-    * { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      color-scheme: dark;
+      --background: #0a0a0a;
+      --panel: #101010;
+      --line: #202020;
+      --muted: #777;
+      --quiet: #484848;
+      --text: #e0e0e0;
+      --green: #16a34a;
+      --paper: #e8f5e8;
+      --ink: #162016;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
     body {
+      margin: 0;
+      background: var(--background);
+      color: var(--text);
       font-family: 'Departure Mono', monospace;
       font-size: 16px;
-      background: #0a0a0a;
-      color: #e0e0e0;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding: 6rem 1.5rem;
+      line-height: 1.6;
     }
+    a { color: inherit; }
+    button, code, pre { font: inherit; }
     .container {
-      max-width: 600px;
-      width: 100%;
-    }
-
-    /* Hero */
-    .hero {
-      text-align: center;
-      margin-bottom: 2.5rem;
-    }
-    .hero-brand {
-      font-size: 4.5rem;
-      font-weight: normal;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      margin-bottom: 1rem;
-      text-align: center;
-      line-height: 1.2;
-    }
-    .hero-word {
-      display: block;
-    }
-    .hero-word:last-child span:last-child {
-      letter-spacing: 0;
-    }
-    .hero-word:first-child span:last-child {
-      letter-spacing: 0;
-    }
-    .hero-tagline {
-      font-size: 0.85rem;
-      color: #555;
-      margin-bottom: 2rem;
-    }
-    .hero-headline {
-      font-size: 1.2rem;
-      font-weight: normal;
-      line-height: 1.6;
-      margin-bottom: 0;
-    }
-
-    /* CTA */
-    .cta {
-      margin-bottom: 3rem;
-      text-align: center;
-    }
-    .signup-row {
-      display: flex;
-      gap: 0;
-      margin-bottom: 0.75rem;
-      max-width: 440px;
-      margin-left: auto;
-      margin-right: auto;
-    }
-    .signup-input {
-      flex: 1;
-      background: #111;
-      border: 1px solid #222;
-      border-right: none;
-      color: #e0e0e0;
-      font-family: 'Departure Mono', monospace;
-      font-size: 0.85rem;
-      padding: 0.85rem 1rem;
-    }
-    .signup-input:focus {
-      outline: none;
-      border-color: #444;
-    }
-    .signup-input::placeholder { color: #444; }
-    .cta-button {
-      background: #16a34a;
-      color: #fff;
-      border: 1px solid #16a34a;
-      padding: 0.85rem 1.5rem;
-      font-family: 'Departure Mono', monospace;
-      font-size: 0.85rem;
-      letter-spacing: 0.05em;
-      cursor: pointer;
-      white-space: nowrap;
-    }
-    .cta-button:hover {
-      background: #15803d;
-      border-color: #15803d;
-    }
-    .cta-button:disabled {
-      opacity: 0.5;
-      cursor: not-allowed;
-    }
-    .cta-subtext {
-      font-size: 0.75rem;
-      color: #444;
-    }
-    .key-display {
-      background: #111;
-      border: 1px solid #16a34a;
-      padding: 1.25rem;
-      margin-bottom: 0.75rem;
-      text-align: left;
-      max-width: 440px;
-      margin-left: auto;
-      margin-right: auto;
-    }
-    .key-label {
-      font-size: 0.7rem;
-      color: #444;
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
-      margin-bottom: 0.5rem;
-    }
-    .signup-error-msg {
-      font-size: 0.85rem;
-      color: #a85454;
-    }
-
-    /* Capsule showcase — tractor-feed printout */
-    .showcase {
-      margin-bottom: 5rem;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-    .section-label {
-      font-size: 0.7rem;
-      color: #444;
-      text-transform: uppercase;
-      letter-spacing: 0.2em;
-      margin-bottom: 2rem;
-      text-align: center;
-    }
-    .printout-wrapper {
-      max-width: 440px;
-      width: 100%;
-      display: flex;
-      position: relative;
+      width: min(760px, calc(100% - 2rem));
       margin: 0 auto;
+      padding: 2rem 0 4rem;
     }
-    .pin-strip {
-      width: 22px;
-      flex-shrink: 0;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding-top: 14px;
-      gap: 18px;
-    }
-    .pin-strip.left { margin-right: 2px; }
-    .pin-strip.right { margin-left: 2px; }
-    .pin-hole {
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
-      background: #0a0a0a;
-      border: 1px solid #999;
-      flex-shrink: 0;
-    }
-    .printout {
-      flex: 1;
-      overflow: hidden;
-      border: 1px solid #ccc;
-      position: relative;
-    }
-    .printout-tear-top,
-    .printout-tear-bottom {
-      height: 6px;
-      background: repeating-linear-gradient(
-        90deg,
-        #fafaf5 0px,
-        #fafaf5 4px,
-        transparent 4px,
-        transparent 8px
-      );
-    }
-    .printout-row {
-      padding: 0.5rem 1rem;
-      font-size: 0.8rem;
-      line-height: 1.5;
-    }
-    .printout-row:nth-child(odd) {
-      background: #e8f5e8;
-      color: #1a1a1a;
-    }
-    .printout-row:nth-child(even) {
-      background: #fafaf5;
-      color: #1a1a1a;
-    }
-    .printout-header {
-      text-align: center;
-      padding: 1rem 1rem 0.75rem;
-      background: #e8f5e8;
-    }
-    .printout-header h2 {
-      font-size: 0.9rem;
-      font-weight: normal;
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      color: #1a1a1a;
-    }
-    .printout-badge {
-      display: inline-block;
-      margin-top: 0.4rem;
-      padding: 0.2rem 0.6rem;
-      border: 1px solid #16a34a;
-      color: #16a34a;
-      font-size: 0.6rem;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-    }
-    .printout-id {
-      text-align: center;
-      font-size: 0.6rem;
-      color: #888;
-      padding: 0.25rem 1rem 0.5rem;
-      background: #fafaf5;
-    }
-    .printout-section-label {
-      font-size: 0.6rem;
-      color: #666;
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
-      margin-bottom: 0.25rem;
-    }
-    .printout-row ul {
-      list-style: none;
-      padding: 0;
-      margin: 0.25rem 0 0 0;
-    }
-    .printout-row ul li {
-      font-size: 0.75rem;
-      line-height: 1.6;
-    }
-    .printout-row ul li::before {
-      content: "> ";
-      color: #888;
-    }
-    .printout-footer {
-      text-align: center;
-      padding: 0.5rem 1rem 0.75rem;
-      font-size: 0.6rem;
-      color: #888;
-      background: #e8f5e8;
-    }
-    .printout-details {
-      padding: 0.5rem 1rem;
-      background: #fafaf5;
-    }
-    .printout-details summary {
-      cursor: pointer;
-      font-size: 0.65rem;
-      color: #888;
-      letter-spacing: 0.05em;
-    }
-    .printout-details pre {
-      background: #f0f0ea;
-      padding: 0.5rem;
-      overflow-x: auto;
-      font-size: 0.6rem;
-      margin-top: 0.4rem;
-      font-family: 'Departure Mono', monospace;
-      color: #1a1a1a;
-    }
-    .printout-meta {
+    .topbar {
       display: flex;
       justify-content: space-between;
-      font-size: 0.65rem;
-      color: #888;
-    }
-
-    /* How it works */
-    .how-it-works {
-      margin-bottom: 5rem;
-    }
-    .steps {
-      display: flex;
-      flex-direction: column;
+      align-items: center;
       gap: 1rem;
+      padding-bottom: 1.25rem;
+      border-bottom: 1px solid #151515;
     }
-    .step {
-      background: #111;
-      border: 1px solid #1a1a1a;
-      padding: 1.5rem;
+    .wordmark {
+      font-size: .76rem;
+      letter-spacing: .16em;
+      text-transform: uppercase;
+      text-decoration: none;
     }
-    .step-number {
-      font-size: 0.7rem;
-      color: #333;
-      letter-spacing: 0.1em;
-      margin-bottom: 0.5rem;
+    .topnav { display: flex; gap: 1.25rem; }
+    .topnav a, .footer-nav a {
+      color: var(--muted);
+      font-size: .72rem;
+      text-decoration: none;
     }
-    .step-title {
-      font-size: 1.2rem;
-      color: #e0e0e0;
-      margin-bottom: 0.5rem;
+    .topnav a:hover, .footer-nav a:hover { color: var(--text); }
+    .hero {
+      padding: 6rem 0 3rem;
+      text-align: center;
+    }
+    .eyebrow, .section-label {
+      color: var(--green);
+      font-size: .67rem;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+    }
+    .hero h1 {
+      max-width: 700px;
+      margin: 1.2rem auto 1.4rem;
+      font-size: clamp(2rem, 6vw, 4.15rem);
       font-weight: normal;
+      letter-spacing: -.055em;
+      line-height: 1.06;
     }
-    .step-description {
-      font-size: 0.8rem;
-      color: #555;
-      line-height: 1.6;
-      margin-bottom: 1rem;
+    .hero-copy {
+      max-width: 650px;
+      margin: 0 auto;
+      color: #9a9a9a;
+      font-size: clamp(.9rem, 2vw, 1.02rem);
     }
-    .step-description:last-child {
-      margin-bottom: 0;
+    .install-card {
+      max-width: 670px;
+      margin: 0 auto 5rem;
+      padding: 1.2rem;
+      background: var(--panel);
+      border: 1px solid var(--line);
     }
-    .code-block {
-      background: #0a0a0a;
-      border: 1px solid #1a1a1a;
-      color: #7c9a5e;
-      padding: 1rem;
-      font-size: 0.75rem;
-      line-height: 1.6;
+    .install-label {
+      margin-bottom: .65rem;
+      color: var(--quiet);
+      font-size: .66rem;
+      text-transform: uppercase;
+      letter-spacing: .13em;
+    }
+    .install-row {
+      display: flex;
+      align-items: stretch;
+      gap: 1px;
+      background: var(--line);
+      border: 1px solid var(--line);
+    }
+    .install-command {
+      flex: 1;
       overflow-x: auto;
-      font-family: 'Departure Mono', monospace;
-    }
-    .code-block .comment {
-      color: #444;
-    }
-
-    /* Two interfaces */
-    .two-ways {
-      margin-bottom: 5rem;
-    }
-    .two-ways-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 1px;
-      background: #1a1a1a;
-      border: 1px solid #1a1a1a;
-    }
-    .two-ways-item {
-      background: #0a0a0a;
-      padding: 1.25rem;
-    }
-    .two-ways-label {
-      font-size: 0.65rem;
-      color: #444;
-      text-transform: uppercase;
-      letter-spacing: 0.15em;
-      margin-bottom: 0.5rem;
-    }
-    .two-ways-title {
-      font-size: 0.9rem;
-      color: #e0e0e0;
-      margin-bottom: 0.4rem;
-    }
-    .two-ways-desc {
-      font-size: 0.75rem;
-      color: #555;
-      line-height: 1.5;
-    }
-    .two-ways-footnote {
-      font-size: 0.75rem;
-      color: #333;
-      margin-top: 1rem;
-      text-align: center;
-    }
-
-    /* Comparison */
-    .comparison {
-      margin-bottom: 5rem;
-    }
-    .comparison-grid {
-      display: flex;
-      flex-direction: column;
-      gap: 0.5rem;
-      margin-bottom: 1.5rem;
-    }
-    .comparison-item {
-      display: flex;
-      gap: 1rem;
-      padding: 0.75rem 0;
-      border-bottom: 1px solid #111;
-    }
-    .comparison-what {
-      font-size: 0.8rem;
-      color: #555;
+      padding: .95rem 1rem;
+      background: #080808;
+      color: #96c68a;
+      font-size: .78rem;
       white-space: nowrap;
-      flex-shrink: 0;
     }
-    .comparison-problem {
-      font-size: 0.8rem;
-      color: #333;
-      line-height: 1.5;
-    }
-    .comparison-punchline {
-      font-size: 0.8rem;
-      color: #888;
-      line-height: 1.6;
-      padding-left: 1rem;
-      border-left: 2px solid #16a34a;
-    }
-
-    /* Failure cases */
-    .failures {
-      margin-bottom: 5rem;
-    }
-    .failure-card {
-      border: 1px solid #1a1a1a;
-      margin-bottom: 1rem;
-      overflow: hidden;
-    }
-    .failure-scenario {
-      padding: 1.25rem;
-      background: #0d0d0d;
-    }
-    .failure-label {
-      font-size: 0.65rem;
-      color: #333;
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
-      margin-bottom: 0.5rem;
-    }
-    .failure-title {
-      font-size: 0.9rem;
-      color: #e0e0e0;
-      margin-bottom: 0.5rem;
-    }
-    .failure-halves {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 1px;
-      background: #1a1a1a;
-    }
-    .failure-half {
-      padding: 1rem 1.25rem;
-      background: #0a0a0a;
-    }
-    .failure-half-label {
-      font-size: 0.6rem;
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
-      margin-bottom: 0.5rem;
-    }
-    .failure-half-label.without { color: #a85454; }
-    .failure-half-label.with { color: #16a34a; }
-    .failure-half p {
-      font-size: 0.75rem;
-      color: #666;
-      line-height: 1.6;
-      margin: 0;
-    }
-    .failure-half.bad p { color: #776060; }
-    .failure-half.good p { color: #8a8a8a; }
-    .failure-half code {
-      font-family: 'Departure Mono', monospace;
-      font-size: 0.7rem;
-      background: #111;
-      padding: 0.1rem 0.35rem;
-    }
-
-    @media (max-width: 640px) {
-      .failure-halves { grid-template-columns: 1fr; }
-    }
-
-    /* Ecosystem */
-    .ecosystem {
-      margin-bottom: 5rem;
-    }
-    .ecosystem-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 1px;
-      background: #1a1a1a;
-      border: 1px solid #1a1a1a;
-      margin-bottom: 1rem;
-    }
-    .ecosystem-item {
-      background: #0a0a0a;
-      padding: 1.25rem;
-    }
-    .ecosystem-name {
-      font-size: 0.85rem;
-      color: #e0e0e0;
-      margin-bottom: 0.4rem;
-    }
-    .ecosystem-role {
-      font-size: 0.7rem;
-      color: #16a34a;
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
-      margin-bottom: 0.5rem;
-    }
-    .ecosystem-desc {
-      font-size: 0.75rem;
-      color: #555;
-      line-height: 1.5;
-    }
-    .ecosystem-footnote {
-      font-size: 0.75rem;
-      color: #333;
-      text-align: center;
-    }
-    .ecosystem-footnote a {
-      color: #444;
+    .copy-button, .primary-link, .secondary-link {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid var(--green);
+      padding: .8rem 1rem;
+      background: var(--green);
+      color: white;
+      cursor: pointer;
+      font-size: .72rem;
       text-decoration: none;
     }
-    .ecosystem-footnote a:hover { color: #888; }
-
-    /* MCP install */
-    .mcp-install {
-      margin-bottom: 5rem;
-      text-align: center;
-    }
-    .mcp-install-cmd {
-      display: inline-block;
-      background: #111;
-      border: 1px solid #1a1a1a;
-      padding: 0.6rem 1.25rem;
-      font-size: 0.75rem;
-      color: #7c9a5e;
-      font-family: 'Departure Mono', monospace;
-      margin-top: 1rem;
-      letter-spacing: 0.02em;
-    }
-    .mcp-install-note {
-      font-size: 0.65rem;
-      color: #333;
-      margin-top: 0.6rem;
-    }
-    .mcp-install-note a {
-      color: #444;
-      text-decoration: none;
-    }
-    .mcp-install-note a:hover {
-      color: #888;
-    }
-
-    /* Footer nav */
-    .footer-nav {
+    .copy-button:hover, .primary-link:hover { background: #15803d; }
+    .install-actions {
       display: flex;
       justify-content: center;
-      gap: 2rem;
-      margin-bottom: 2rem;
-      padding-top: 2rem;
-      border-top: 1px solid #111;
-      width: 100%;
+      gap: .65rem;
+      margin-top: 1rem;
     }
-    .footer-nav a {
-      font-size: 0.75rem;
-      color: #444;
-      text-decoration: none;
-      letter-spacing: 0.05em;
+    .secondary-link {
+      background: transparent;
+      border-color: #333;
+      color: #aaa;
     }
-    .footer-nav a:hover {
-      color: #888;
-    }
-
-    /* Footer */
-    .site-footer {
-      font-size: 0.75rem;
-      color: #333;
+    .secondary-link:hover { border-color: #666; color: white; }
+    .install-note {
+      margin: .9rem 0 0;
+      color: var(--quiet);
+      font-size: .68rem;
       text-align: center;
-      width: 100%;
     }
-
-    /* Tablet */
-    @media (max-width: 640px) {
-      body { padding: 3rem 1rem; }
-      .hero { margin-bottom: 2rem; }
-      .hero-brand { font-size: 3.2rem; letter-spacing: 0.14em; }
-      .hero-tagline { font-size: 0.75rem; }
-      .hero-headline { font-size: 1rem; }
-      .section-label { font-size: 0.65rem; }
-      .printout-wrapper { max-width: 100%; }
-      .pin-strip { display: none; }
-      .step { padding: 1rem; }
-      .step-title { font-size: 1rem; }
-      .code-block { font-size: 0.65rem; padding: 0.75rem; }
-      .two-ways-grid { grid-template-columns: 1fr; }
-      .ecosystem-grid { grid-template-columns: 1fr; }
-      .failure-halves { grid-template-columns: 1fr; }
-      .how-it-works, .showcase, .comparison, .two-ways, .failures, .ecosystem, .mcp-install { margin-bottom: 3rem; }
-      .cta { margin-bottom: 2rem; }
-      .cta-button { padding: 0.75rem 1.5rem; font-size: 0.85rem; }
-      .signup-row { flex-direction: column; }
-      .signup-input { border-right: 1px solid #222; }
-      .comparison-item { flex-direction: column; gap: 0.25rem; }
-      .footer-nav { gap: 1.25rem; }
+    section { margin-bottom: 5.5rem; }
+    .section-label { margin-bottom: 1.5rem; text-align: center; }
+    .section-intro {
+      max-width: 620px;
+      margin: -0.5rem auto 1.8rem;
+      color: var(--muted);
+      font-size: .83rem;
+      text-align: center;
     }
-
-    /* Mobile */
-    @media (max-width: 440px) {
-      .hero-brand { font-size: 2.5rem; letter-spacing: 0.1em; }
-      .hero-headline { font-size: 0.9rem; }
-      .printout-row { padding: 0.4rem 0.75rem; font-size: 0.7rem; }
-      .printout-row ul li { font-size: 0.65rem; }
-      .printout-section-label { font-size: 0.55rem; }
-      .printout-header h2 { font-size: 0.8rem; }
-      .printout-meta { font-size: 0.55rem; }
-      .failure-half { padding: 0.75rem 1rem; }
-      .failure-half p { font-size: 0.7rem; }
-      .failure-title { font-size: 0.8rem; }
-      .ecosystem-desc { font-size: 0.7rem; }
-      .footer-nav { gap: 1rem; flex-wrap: wrap; }
+    .printout-shell {
+      width: min(550px, 100%);
+      margin: 0 auto;
+      padding: .8rem 1rem;
+      background: var(--paper);
+      box-shadow: 0 24px 80px rgba(0, 0, 0, .35);
+      color: var(--ink);
     }
-
-    /* Small mobile */
-    @media (max-width: 340px) {
-      .hero-brand { font-size: 2rem; letter-spacing: 0.08em; }
+    .printout-header, .printout-meta {
+      display: flex;
+      justify-content: space-between;
+      gap: 1rem;
+      align-items: center;
     }
-
-    /* Glyph flicker */
-    .glyph-flicker {
+    .printout-header {
+      padding-bottom: .75rem;
+      border-bottom: 1px dashed #91a591;
+      font-size: .78rem;
+      text-transform: uppercase;
+      letter-spacing: .1em;
+    }
+    .status { color: #16723b; }
+    .printout-row { padding: .75rem 0; border-bottom: 1px dashed #b8c9b8; }
+    .printout-key {
+      margin-bottom: .2rem;
+      color: #557055;
+      font-size: .61rem;
+      text-transform: uppercase;
+      letter-spacing: .1em;
+    }
+    .printout-value { font-size: .72rem; }
+    .printout-value ul { margin: .25rem 0 0; padding-left: 1.2rem; }
+    .printout-meta { padding-top: .7rem; color: #668066; font-size: .58rem; }
+    .steps, .card-grid, .pair-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1px;
+      background: var(--line);
+      border: 1px solid var(--line);
+    }
+    .step, .card, .pair {
+      min-width: 0;
+      padding: 1.25rem;
+      background: var(--background);
+    }
+    .step-number { color: var(--green); font-size: .65rem; }
+    .step h2, .card h2, .pair h2 {
+      margin: .45rem 0 .55rem;
+      font-size: .9rem;
+      font-weight: normal;
+    }
+    .step p, .card p, .pair p {
+      margin: 0;
+      color: var(--muted);
+      font-size: .72rem;
+    }
+    .card-grid { grid-template-columns: 1fr 1fr; }
+    .card code { color: #96c68a; font-size: .68rem; }
+    .trust-box {
+      padding: 1.4rem;
+      border-left: 2px solid var(--green);
+      background: var(--panel);
+      color: #a0a0a0;
+      font-size: .79rem;
+    }
+    .trust-box strong { color: var(--text); font-weight: normal; }
+    .pair-grid { grid-template-columns: 1fr 1fr; }
+    .pair-role {
+      color: var(--green);
+      font-size: .62rem;
+      letter-spacing: .11em;
+      text-transform: uppercase;
+    }
+    .pair-link {
       display: inline-block;
-      transition: opacity 0.12s ease;
+      margin-top: .85rem;
+      color: #999;
+      font-size: .68rem;
+      text-decoration: none;
+    }
+    .pair-link:hover { color: white; }
+    .hosted {
+      display: grid;
+      grid-template-columns: 1.2fr .8fr;
+      gap: 1.5rem;
+      align-items: start;
+      padding: 1.4rem;
+      border: 1px solid var(--line);
+      background: var(--panel);
+    }
+    .hosted h2 { margin: 0 0 .6rem; font-size: .92rem; font-weight: normal; }
+    .hosted p { margin: 0; color: var(--muted); font-size: .75rem; }
+    .hosted-links { display: flex; flex-direction: column; gap: .55rem; }
+    .hosted-links a { color: #aaa; font-size: .7rem; text-decoration: none; }
+    .hosted-links a:hover { color: white; }
+    footer {
+      padding-top: 2rem;
+      border-top: 1px solid #151515;
+      text-align: center;
+    }
+    .footer-nav { display: flex; justify-content: center; flex-wrap: wrap; gap: 1.2rem; }
+    .footer-note { margin-top: 1.25rem; color: #393939; font-size: .66rem; }
+    @media (max-width: 700px) {
+      .container { width: min(100% - 1.25rem, 760px); }
+      .topnav a:not(:last-child) { display: none; }
+      .hero { padding-top: 4rem; }
+      .install-row { flex-direction: column; }
+      .copy-button { width: 100%; }
+      .install-actions { flex-direction: column; }
+      .steps, .card-grid, .pair-grid, .hosted { grid-template-columns: 1fr; }
     }
   </style>
 </head>
 <body>
   <main class="container">
+    <header class="topbar">
+      <a class="wordmark" href="/">Context Capsule</a>
+      <nav class="topnav" aria-label="Primary">
+        <a href="#how-it-works">How it works</a>
+        <a href="/docs">Hosted API</a>
+        <a href="https://github.com/Johnny-Z13/context-capsule">GitHub</a>
+      </nav>
+    </header>
 
-    <!-- Hero -->
     <section class="hero">
-      <div class="hero-brand" aria-label="Context Capsule">
-        <div class="hero-word"><span>C</span><span class="glyph-flicker" data-alt="0">O</span><span>N</span><span>T</span><span>E</span><span>X</span><span>T</span></div>
-        <div class="hero-word"><span>C</span><span>A</span><span>P</span><span>S</span><span>U</span><span>L</span><span>E</span></div>
-      </div>
-      <div class="hero-tagline">portable context for agent workflows</div>
-      <h1 class="hero-headline">The context your agents need &mdash; nothing they don&rsquo;t.</h1>
+      <div class="eyebrow">Open-source Agent Skill</div>
+      <h1>Switch coding agents without losing the thread.</h1>
+      <p class="hero-copy">Context Capsule hands the next coding agent the repository state, decisions, constraints, verification, blockers, and exact next action it needs to continue safely.</p>
     </section>
 
-    <!-- CTA -->
-    <section class="cta" id="signup">
-      <div id="signup-form">
-        <div class="signup-row">
-          <input type="email" id="signup-email" placeholder="you@example.com" class="signup-input" autocomplete="email">
-          <button id="signup-btn" class="cta-button" onclick="doSignup()">Get API key</button>
-        </div>
-        <div class="cta-subtext">Free — 500 capsules/month. No credit card.</div>
+    <section class="install-card" aria-label="Install Context Capsule">
+      <div class="install-label">Install for Codex, Claude Code, Cursor, and compatible agents</div>
+      <div class="install-row">
+        <code class="install-command" id="install-command">npx skills add Johnny-Z13/context-capsule --skill contextcapsule-handoff</code>
+        <button class="copy-button" id="copy-button" type="button" onclick="copyInstall()">Copy</button>
       </div>
-      <div id="signup-result" style="display:none">
-        <div class="key-display">
-          <div class="key-label" style="color:#16a34a;font-size:0.85rem;margin-bottom:0.75rem">Check your email</div>
-          <div style="font-size:0.8rem;color:#888;line-height:1.6;">Your API key has been sent to <strong id="sent-email" style="color:#e0e0e0"></strong>.<br>It looks like a printout &mdash; you&rsquo;ll recognize it.</div>
-        </div>
-        <div class="cta-subtext" style="margin-top:0.75rem">Didn&rsquo;t get it? Check spam, or sign up via curl for instant access.</div>
+      <div class="install-actions">
+        <a class="primary-link" href="https://github.com/Johnny-Z13/context-capsule/tree/main/.agents/skills/contextcapsule-handoff">Read the skill</a>
+        <a class="secondary-link" href="/example">See a handoff</a>
       </div>
-      <div id="signup-error" style="display:none">
-        <div class="signup-error-msg" id="signup-error-msg"></div>
-        <button class="cta-button" onclick="resetSignup()" style="margin-top:0.75rem">Try again</button>
-      </div>
+      <p class="install-note">The skill works locally. No account, API key, or upload is required.</p>
     </section>
 
-    <!-- Capsule Showcase — tractor-feed printout -->
-    <section class="showcase">
-      <div class="printout-wrapper">
-        <div class="pin-strip left">
-          <div class="pin-hole"></div><div class="pin-hole"></div><div class="pin-hole"></div>
-          <div class="pin-hole"></div><div class="pin-hole"></div><div class="pin-hole"></div>
-          <div class="pin-hole"></div><div class="pin-hole"></div><div class="pin-hole"></div>
-          <div class="pin-hole"></div><div class="pin-hole"></div><div class="pin-hole"></div>
-          <div class="pin-hole"></div><div class="pin-hole"></div><div class="pin-hole"></div>
-          <div class="pin-hole"></div><div class="pin-hole"></div><div class="pin-hole"></div>
+    <section aria-labelledby="example-label">
+      <div class="section-label" id="example-label">A legible coding handoff</div>
+      <div class="printout-shell">
+        <div class="printout-header"><span>Context Capsule / coding-handoff/v1</span><span class="status">Compatible</span></div>
+        <div class="printout-row">
+          <div class="printout-key">Objective</div>
+          <div class="printout-value">Finish the refresh-token migration without breaking legacy consumers.</div>
         </div>
-        <div class="printout">
-          <div class="printout-tear-top"></div>
-          <div class="printout-header">
-            <h2>Context Capsule</h2>
-            <div class="printout-badge">Active</div>
-          </div>
-          <div class="printout-id">cap_k7x9m2nq4p1r8w3v5</div>
-          <div class="printout-row">
-            <div class="printout-section-label">Summary</div>
-            Investigated auth bug in refresh token logic. Root cause: JWT refresh window expired silently. Fixed in auth/refresh.ts with extended 7-day window.
-          </div>
-          <div class="printout-row">
-            <div class="printout-section-label">Decisions</div>
-            <ul>
-              <li>Extended refresh window to 7 days over sliding sessions</li>
-              <li>Kept legacy endpoint — 3 downstream consumers depend on it</li>
-            </ul>
-          </div>
-          <div class="printout-row">
-            <div class="printout-section-label">Next Steps</div>
-            <ul>
-              <li>Deploy to staging and run integration suite</li>
-              <li>Notify API consumers about deprecation timeline</li>
-            </ul>
-          </div>
-          <div class="printout-details">
-            <details>
-              <summary>&gt; view payload</summary>
-              <pre>{
-  "files_changed": ["src/auth/refresh.ts"],
-  "test_results": "14 pass, 0 fail",
-  "related_receipts": ["rct_proof1"]
-}</pre>
-            </details>
-          </div>
-          <div class="printout-row">
-            <div class="printout-meta">
-              <span>2 Apr 2026 12:00</span>
-              <span>expires 3 Apr 2026</span>
-            </div>
-          </div>
-          <div class="printout-footer">
-            contextcapsule.ai
-          </div>
-          <div class="printout-tear-bottom"></div>
+        <div class="printout-row">
+          <div class="printout-key">Current status</div>
+          <div class="printout-value">Implementation is complete on <code>codex/refresh-window</code>. Production has not been checked.</div>
         </div>
-        <div class="pin-strip right">
-          <div class="pin-hole"></div><div class="pin-hole"></div><div class="pin-hole"></div>
-          <div class="pin-hole"></div><div class="pin-hole"></div><div class="pin-hole"></div>
-          <div class="pin-hole"></div><div class="pin-hole"></div><div class="pin-hole"></div>
-          <div class="pin-hole"></div><div class="pin-hole"></div><div class="pin-hole"></div>
-          <div class="pin-hole"></div><div class="pin-hole"></div><div class="pin-hole"></div>
-          <div class="pin-hole"></div><div class="pin-hole"></div><div class="pin-hole"></div>
+        <div class="printout-row">
+          <div class="printout-key">Decisions and constraints</div>
+          <div class="printout-value"><ul><li>Keep the legacy endpoint; three consumers still use it.</li><li>Do not publish without human approval.</li></ul></div>
         </div>
+        <div class="printout-row">
+          <div class="printout-key">Verification</div>
+          <div class="printout-value"><code>npm test -- --run</code> — 71 passed — observed locally at 12:04 UTC.</div>
+        </div>
+        <div class="printout-row">
+          <div class="printout-key">Next action</div>
+          <div class="printout-value">Run the staging smoke test, then ask before release.</div>
+        </div>
+        <div class="printout-row">
+          <div class="printout-key">Evidence reference</div>
+          <div class="printout-value">ProofSlip: none yet — deployment is not proven.</div>
+        </div>
+        <div class="printout-meta"><span>HEAD 81d9c1a · dirty</span><span>expires in 24 hours</span></div>
       </div>
     </section>
 
-    <!-- How It Works -->
-    <section class="how-it-works">
-      <div class="section-label">How It Works</div>
+    <section id="how-it-works">
+      <div class="section-label">Capture, hand off, resume</div>
+      <p class="section-intro">It carries the minimum useful state across tools without pretending that old context is current.</p>
       <div class="steps">
-
-        <div class="step">
-          <div class="step-number">01</div>
-          <div class="step-title">Create</div>
-          <p class="step-description">Package your agent&rsquo;s working context into a capsule — decisions, findings, next steps.</p>
-          <div class="code-block"><span class="comment"># POST /v1/capsules</span>
-{
-  "summary": "Investigated auth bug. Fixed in auth/refresh.ts.",
-  "decisions": ["Extended refresh window to 7 days"],
-  "next_steps": ["Deploy to staging", "Notify consumers"],
-  "idempotency_key": "auth-fix-session-42"
-}</div>
-        </div>
-
-        <div class="step">
-          <div class="step-number">02</div>
-          <div class="step-title">Fetch</div>
-          <p class="step-description">The next agent loads the capsule. Structured context, no re-discovery, no token waste.</p>
-          <div class="code-block"><span class="comment"># GET /v1/capsules/cap_k7x9m2nq4p1r8w3v5</span>
-{
-  "id": "cap_k7x9m2nq4p1r8w3v5",
-  "summary": "Investigated auth bug. Fixed in auth/refresh.ts.",
-  "decisions": ["Extended refresh window to 7 days"],
-  "next_steps": ["Deploy to staging", "Notify consumers"],
-  "expires_at": "2026-04-03T12:00:00Z"
-}</div>
-        </div>
-
-        <div class="step">
-          <div class="step-number">03</div>
-          <div class="step-title">Expire</div>
-          <p class="step-description">Capsules auto-expire. Default 24 hours, up to 7 days. No stale context, no cleanup.</p>
-        </div>
-
+        <article class="step">
+          <div class="step-number">01 / Capture</div>
+          <h2>Inspect the repository</h2>
+          <p>Record the remote, branch, HEAD, working-tree fingerprint, and changed filenames. Never copy source files into the capsule.</p>
+        </article>
+        <article class="step">
+          <div class="step-number">02 / Author</div>
+          <h2>Write the handoff</h2>
+          <p>Separate observed verification from reported claims. Name decisions, blockers, and one concrete next action.</p>
+        </article>
+        <article class="step">
+          <div class="step-number">03 / Resume</div>
+          <h2>Check freshness first</h2>
+          <p>Classify the capsule as compatible, stale, mismatched, or unverifiable before trusting repo-specific details.</p>
+        </article>
       </div>
     </section>
 
-    <!-- Two interfaces -->
-    <section class="two-ways">
-      <div class="section-label">One capsule, two interfaces</div>
-      <div class="two-ways-grid">
-        <div class="two-ways-item">
-          <div class="two-ways-label">For humans</div>
-          <div class="two-ways-title">Shareable URL</div>
-          <div class="two-ways-desc">Every capsule has a readable page. Share the link to see exactly what context was handed off &mdash; decisions, next steps, payload.</div>
-        </div>
-        <div class="two-ways-item">
-          <div class="two-ways-label">For agents</div>
-          <div class="two-ways-title">JSON API</div>
-          <div class="two-ways-desc">Same capsule, machine-readable. Your agent fetches structured context and picks up exactly where the last one left off.</div>
-        </div>
+    <section>
+      <div class="section-label">What the author must make clear</div>
+      <div class="card-grid">
+        <article class="card"><h2>Objective</h2><p>The outcome, not a transcript of the session.</p></article>
+        <article class="card"><h2>Status</h2><p>What is complete, partial, unverified, or explicitly out of scope.</p></article>
+        <article class="card"><h2>Decisions</h2><p>Choices the next agent must preserve, with enough reason to avoid accidental reversal.</p></article>
+        <article class="card"><h2>Verification</h2><p>The command, result, timestamp, and whether it was <code>observed</code> or merely <code>reported</code>.</p></article>
+        <article class="card"><h2>Blockers</h2><p>Anything that needs authority, credentials, another person, or external state.</p></article>
+        <article class="card"><h2>Next action</h2><p>One bounded step the receiving agent can actually take.</p></article>
       </div>
-      <div class="two-ways-footnote">Content negotiation &mdash; same URL, different formats.</div>
     </section>
 
-    <!-- Why not just... -->
-    <section class="comparison">
-      <div class="section-label">Why not just use...</div>
-      <div class="comparison-grid">
-        <div class="comparison-item">
-          <div class="comparison-what">Full conversation?</div>
-          <div class="comparison-problem">50k tokens of noise to find 500 tokens of signal.</div>
-        </div>
-        <div class="comparison-item">
-          <div class="comparison-what">A summary?</div>
-          <div class="comparison-problem">Lossy. Misses decisions, open questions, structured data.</div>
-        </div>
-        <div class="comparison-item">
-          <div class="comparison-what">A shared database?</div>
-          <div class="comparison-problem">Couples your agents. No expiry, no structure, no portability.</div>
-        </div>
-      </div>
-      <div class="comparison-punchline">Context Capsule gives the next agent compressed, structured, expiring context it can act on immediately.</div>
+    <section>
+      <div class="section-label">Local first, trust bounded</div>
+      <div class="trust-box"><strong>The default handoff stays in your repository.</strong> The helper excludes its own <code>.contextcapsule/</code> artifacts from freshness checks, records filenames rather than file contents, and rejects common credential patterns. The agent must ask before writing files, changing ignore rules, or uploading a capsule. A hosted capsule is public to anyone with its URL, so sharing is always an explicit choice.</div>
     </section>
 
-    <!-- Why agents need capsules -->
-    <section class="failures">
-      <div class="section-label">Why agents need structured handoffs</div>
-
-      <div class="failure-card">
-        <div class="failure-scenario">
-          <div class="failure-label">Wasted tokens</div>
-          <div class="failure-title">Agent B re-discovers everything Agent A already found because the raw conversation was too long to pass.</div>
-        </div>
-        <div class="failure-halves">
-          <div class="failure-half bad">
-            <div class="failure-half-label without">Without capsules</div>
-            <p>Agent A spends 50k tokens researching a bug. Agent B gets a one-line summary. Spends another 40k tokens re-investigating the same code paths.</p>
-          </div>
-          <div class="failure-half good">
-            <div class="failure-half-label with">With Context Capsule</div>
-            <p>Agent A creates a capsule with <code>summary</code>, <code>decisions</code>, and <code>next_steps</code>. Agent B loads 500 tokens of structured context and starts at step 4.</p>
-          </div>
-        </div>
+    <section>
+      <div class="section-label">How it works with ProofSlip</div>
+      <p class="section-intro">They remain separate products with one clean connection: a capsule can point to proof when a handoff claim needs independent checking.</p>
+      <div class="pair-grid">
+        <article class="pair">
+          <div class="pair-role">Navigation</div>
+          <h2>Context Capsule</h2>
+          <p>What is the situation, what matters, and what should the next coding agent do?</p>
+        </article>
+        <article class="pair">
+          <div class="pair-role">Evidence</div>
+          <h2>ProofSlip</h2>
+          <p>What did the release environment actually attest, and can the next agent verify it?</p>
+          <a class="pair-link" href="https://www.proofslip.ai">Check the release-proof product →</a>
+        </article>
       </div>
-
-      <div class="failure-card">
-        <div class="failure-scenario">
-          <div class="failure-label">Lost decisions</div>
-          <div class="failure-title">A handoff agent reverses a critical decision because it was buried in conversation history.</div>
-        </div>
-        <div class="failure-halves">
-          <div class="failure-half bad">
-            <div class="failure-half-label without">Without capsules</div>
-            <p>Agent A decided to keep the legacy endpoint. Agent B doesn&rsquo;t know this, deletes it. Three services break.</p>
-          </div>
-          <div class="failure-half good">
-            <div class="failure-half-label with">With Context Capsule</div>
-            <p>The capsule&rsquo;s <code>decisions</code> field explicitly lists &ldquo;kept legacy endpoint &mdash; 3 consumers depend on it.&rdquo; Agent B reads it and leaves it alone.</p>
-          </div>
-        </div>
-      </div>
-
-      <div class="failure-card">
-        <div class="failure-scenario">
-          <div class="failure-label">Context overflow</div>
-          <div class="failure-title">An agent&rsquo;s context window fills up with stale handoff data from three sessions ago.</div>
-        </div>
-        <div class="failure-halves">
-          <div class="failure-half bad">
-            <div class="failure-half-label without">Without capsules</div>
-            <p>Each handoff dumps more text into the context window. By session 4, the agent is hallucinating against outdated information from session 1.</p>
-          </div>
-          <div class="failure-half good">
-            <div class="failure-half-label with">With Context Capsule</div>
-            <p>Each capsule expires. The agent only loads the most recent one. Chain them via <code>parent_capsule_id</code> if you need history. Fresh context, always.</p>
-          </div>
-        </div>
-      </div>
-
     </section>
 
-    <!-- ProofSlip + Context Capsule ecosystem -->
-    <section class="ecosystem">
-      <div class="section-label">Two primitives, one coordination layer</div>
-      <div class="ecosystem-grid">
-        <div class="ecosystem-item">
-          <div class="ecosystem-name">ProofSlip</div>
-          <div class="ecosystem-role">Verification</div>
-          <div class="ecosystem-desc">Did it happen? Ephemeral receipts your agents verify before they act. Proof of past actions.</div>
+    <section>
+      <div class="section-label">Open source first, hosted when useful</div>
+      <div class="hosted">
+        <div>
+          <h2>The skill and local format are the product.</h2>
+          <p>Read every instruction, run the bundled Node helper, adapt the format, or self-host the Hono/Postgres service. The hosted API remains available when you deliberately need a short-lived handoff URL for another machine or person.</p>
         </div>
-        <div class="ecosystem-item">
-          <div class="ecosystem-name">Context Capsule</div>
-          <div class="ecosystem-role">Knowledge</div>
-          <div class="ecosystem-desc">What do I need to know? Structured handoff packets that carry decisions, findings, and next steps forward.</div>
+        <div class="hosted-links">
+          <a href="https://github.com/Johnny-Z13/context-capsule">Source and self-hosting →</a>
+          <a href="/docs">Hosted API documentation →</a>
+          <a href="https://www.npmjs.com/package/@contextcapsule/mcp-server">Optional MCP server →</a>
         </div>
       </div>
-      <div class="ecosystem-footnote">Capsules reference receipts. Receipts prove what capsules describe. <a href="https://proofslip.ai" target="_blank">proofslip.ai &rarr;</a></div>
     </section>
 
-    <!-- MCP -->
-    <section class="mcp-install">
-      <div class="section-label">MCP Server</div>
-      <div class="mcp-install-cmd">npx -y @contextcapsule/mcp-server</div>
-      <div class="mcp-install-note">Works with Claude Desktop, Cursor, Windsurf, and any MCP client.</div>
-    </section>
-
-    <!-- Footer nav -->
-    <nav class="footer-nav">
-      <a href="/docs">API docs</a>
-      <a href="/llms.txt">llms.txt</a>
-      <a href="https://www.proofslip.ai" target="_blank">ProofSlip</a>
-      <a href="https://www.npmjs.com/package/@contextcapsule/mcp-server" target="_blank">npm</a>
-      <a href="https://github.com/Johnny-Z13/context-capsule" target="_blank">GitHub</a>
-    </nav>
-
-    <!-- Footer -->
-    <footer class="site-footer">
-      contextcapsule.ai &mdash; capsules expire, knowledge transfers.
+    <footer>
+      <nav class="footer-nav" aria-label="Footer">
+        <a href="/docs">Hosted API</a>
+        <a href="/llms.txt">llms.txt</a>
+        <a href="https://www.proofslip.ai">ProofSlip</a>
+        <a href="https://github.com/Johnny-Z13/context-capsule">GitHub</a>
+        <a href="https://z13labs.com">Z13Labs</a>
+      </nav>
+      <div class="footer-note">Context expires. Decisions transfer.</div>
     </footer>
-
   </main>
   <script>
-    var SIGNUP_URL = "/v1/auth/signup";
-    async function doSignup() {
-      var email = document.getElementById("signup-email").value.trim();
-      if (!email) return;
-      var btn = document.getElementById("signup-btn");
-      btn.disabled = true;
-      btn.textContent = "...";
-      try {
-        var res = await fetch(SIGNUP_URL, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ email: email, source: "web" })
-        });
-        var data = await res.json();
-        if (!res.ok) {
-          document.getElementById("signup-form").style.display = "none";
-          document.getElementById("signup-error-msg").textContent = data.message || "Something went wrong.";
-          document.getElementById("signup-error").style.display = "block";
-          return;
-        }
-        document.getElementById("signup-form").style.display = "none";
-        document.getElementById("sent-email").textContent = email;
-        document.getElementById("signup-result").style.display = "block";
-      } catch (err) {
-        document.getElementById("signup-form").style.display = "none";
-        document.getElementById("signup-error-msg").textContent = "Network error. Try again.";
-        document.getElementById("signup-error").style.display = "block";
-      } finally {
-        btn.disabled = false;
-        btn.textContent = "Get API key";
+    function fallbackCopy(command, source) {
+      var temporary = document.createElement('textarea');
+      temporary.value = command;
+      temporary.setAttribute('readonly', '');
+      temporary.style.position = 'fixed';
+      temporary.style.opacity = '0';
+      document.body.appendChild(temporary);
+      temporary.select();
+      var copied = false;
+      try { copied = document.execCommand('copy'); } catch (error) { copied = false; }
+      temporary.remove();
+      if (!copied) {
+        var selection = window.getSelection();
+        var range = document.createRange();
+        range.selectNodeContents(source);
+        selection.removeAllRanges();
+        selection.addRange(range);
       }
+      return copied;
     }
-    function resetSignup() {
-      document.getElementById("signup-error").style.display = "none";
-      document.getElementById("signup-form").style.display = "block";
+    async function copyInstall() {
+      var command = document.getElementById('install-command').textContent;
+      var source = document.getElementById('install-command');
+      var button = document.getElementById('copy-button');
+      var copied = false;
+      if (navigator.clipboard && window.isSecureContext) {
+        try { await navigator.clipboard.writeText(command); copied = true; } catch (error) { copied = false; }
+      }
+      if (!copied) copied = fallbackCopy(command, source);
+      button.textContent = copied ? 'Copied' : 'Selected';
+      setTimeout(function () { button.textContent = 'Copy'; }, 2500);
     }
-    document.getElementById("signup-email").addEventListener("keydown", function(e) {
-      if (e.key === "Enter") doSignup();
-    });
-
-    // Glyph flicker: O ↔ 0
-    (function() {
-      var glyphs = document.querySelectorAll('.glyph-flicker');
-      glyphs.forEach(function(el, i) {
-        var original = el.textContent;
-        var alt = el.getAttribute('data-alt');
-        var showing = true;
-        var delay = i * 2400;
-        setTimeout(function tick() {
-          el.style.opacity = '0';
-          setTimeout(function() {
-            showing = !showing;
-            el.textContent = showing ? original : alt;
-            el.style.opacity = '1';
-          }, 120);
-          setTimeout(tick, 4000 + Math.random() * 2000);
-        }, 3000 + delay);
-      });
-    })();
   </script>
 </body>
 </html>`

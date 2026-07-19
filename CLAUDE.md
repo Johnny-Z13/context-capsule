@@ -1,11 +1,11 @@
 # Context Capsule
 
-Portable execution context for agent workflows.
+Hand off a coding task between AI agents without starting over.
 
 ## Live
 
 - **Production:** https://www.contextcapsule.ai
-- **Domain:** customcapsule.ai (Namecheap → Vercel DNS)
+- **Domain:** contextcapsule.ai
 - **Sister product:** [ProofSlip](https://proofslip.ai) — same ecosystem, shared design language
 - **ProofSlip repo:** D:\Projects\proof-slip (keep READMEs and CLAUDE.md cross-referenced)
 
@@ -16,7 +16,7 @@ Context Capsule is a sister product to ProofSlip. Together they form two primiti
 - **ContextCapsule** (navigational) — "Here's the situation, what matters, and what should happen next."
 - **ProofSlip** (evidential) — "Here's what actually happened, and you can verify it."
 
-ContextCapsule packages the facts, current state, and next-step intent an agent needs to continue reliably. Capsules are structured, compressed, ephemeral execution context — not logs, not transcripts, not a database.
+ContextCapsule is a local-first Agent Skill for coding handoffs. It captures bounded repository state, decisions, constraints, observed or reported verification, blockers, and one next action. The hosted capsule API is optional transport for an explicitly shared, short-lived public-by-URL handoff.
 
 ## Tech Stack
 
@@ -41,22 +41,16 @@ npm run db:query     # Query database utilities
 
 ## Product Direction
 
-Current schema: flat fields (summary, decisions, next_steps, payload, refs).
+The primary contract is `.agents/skills/contextcapsule-handoff` and its local `coding-handoff/v1` format. The existing flat hosted API remains backward compatible and maps a handoff into `summary`, `decisions`, `next_steps`, `payload`, and `refs` only when sharing is explicitly requested.
 
-**V2 planned:** Three structured lanes within capsules:
-- **memory** (context) — relevant past facts (why we're here)
-- **state** — current known facts (what's true now)
-- **intent** — goal + next step + guardrails (what to do next)
-
-See `docs/plans/schema-v2-execution-context.md` for full migration plan.
-See `docs/plans/chaining-patterns.md` for how ContextCapsule + ProofSlip chain together.
-See `docs/plans/critical-analysis.md` for trade-off analysis on V2 decisions.
-
-**Key constraints:** Capsules must stay compact, task-bounded, immediately useful, portable, and human-readable in seconds. They are NOT logs, transcripts, databases, or long-term memory.
+See `docs/current-direction.md` for the active product contract. Older schema and umbrella-brand documents under `docs/plans/` are retained as history, not current direction.
 
 ## Architecture Principles
 
-- Ephemeral by default (capsules expire, max 7 days)
+- Local by default; hosted capsules expire after 24 hours by default (7 days maximum)
+- Check repository identity and freshness before trusting a handoff
+- Never include source contents or secrets in automatically captured repository state
+- Ask before writing handoff files, changing ignore rules, or uploading
 - Idempotency built into the protocol
 - Content negotiation (JSON for agents, HTML for humans)
 - Discovery endpoints (/llms.txt, OpenAPI, MCP manifest)
@@ -82,6 +76,4 @@ These projects share brand, stack, and patterns. Keep them consistent:
 
 Live in production. Core API (create, fetch, auth, cleanup) implemented. Zero users currently — pre-adoption phase. See docs/ for specifications.
 
-**Future plans (not yet started):**
-- Schema V2 (memory/state/intent lanes)
-- Umbrella brand site connecting ContextCapsule + ProofSlip (only after both have users)
+**Current focus:** validate the coding-handoff skill in real Codex and Claude Code workflows, keep the hosted API stable, and connect to ProofSlip only through optional evidence references. No umbrella brand is planned.

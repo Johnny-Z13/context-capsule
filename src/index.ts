@@ -57,31 +57,29 @@ app.get('/example', (c) => {
   c.header('Cache-Control', 'public, max-age=86400')
   return c.html(renderCapsulePage({
     id: 'cap_example_9k2m7x4p',
-    summary: 'Schema migration complete — user table split into users + profiles. Ready for integration tests.',
+    summary: 'Refresh-token migration implemented on codex/refresh-window. Production has not been checked.',
     decisions: [
-      'Used addColumn for backward compat (no recreate)',
-      'Dual-write enabled for 2-week transition period',
-      'Backfill profiles from existing user data before cutover',
+      'Keep the legacy endpoint; three downstream consumers still use it',
+      'Treat local test output as observed, not as proof of deployment',
     ],
     nextSteps: [
-      'Run integration tests against new schema',
-      'Update API serializers for profile fields',
-      'Schedule cutover date with platform team',
+      'Run the staging smoke test',
+      'Ask for human approval before release',
     ],
     payload: {
-      migration_id: 'mig_20260403_split_users',
-      tables_affected: ['users', 'profiles'],
-      rows_backfilled: 12847,
-      backward_compat: true,
+      schema_version: 'coding-handoff/v1',
+      repository: { branch: 'codex/refresh-window', head_sha: '81d9c1a', working_tree: 'dirty' },
+      verification: [{ command: 'npm test -- --run', result: '71 passed', source: 'observed' }],
+      blocker: 'Staging credentials require a human owner',
     },
     refs: {
-      workflow_id: 'migration-456',
-      agent_id: 'schema-agent',
-      session_id: 'sess_abc123',
+      agent_from: 'Codex',
+      agent_to: 'Claude Code',
+      receipt_ids: [],
     },
     audience: 'human',
     createdAt: '2026-04-03T12:00:00.000Z',
-    expiresAt: '2026-04-10T12:00:00.000Z',
+    expiresAt: '2026-04-04T12:00:00.000Z',
   }))
 })
 
@@ -116,12 +114,11 @@ app.get('/.well-known/ai-plugin.json', (c) => {
     schema_version: 'v1',
     name_for_human: 'Context Capsule',
     name_for_model: 'context_capsule',
-    description_for_human: 'Portable context packets for AI agent workflows.',
+    description_for_human: 'Short-lived coding handoffs for switching AI agents without starting over.',
     description_for_model:
-      'Create, fetch, and share structured context capsules that agents use for handoffs. ' +
-      'Capsules contain summaries, decisions, and next steps. ' +
-      'Use this to reduce context window waste, coordinate multi-agent workflows, ' +
-      'and hand off structured working memory between sessions. Capsules expire after 7 days max.',
+      'Use the local Context Capsule Agent Skill for coding handoffs. Use this hosted API only when a user explicitly wants a short-lived share URL. ' +
+      'Hosted capsules are public to anyone with their URL and may contain summaries, decisions, next steps, structured payloads, and ProofSlip references. ' +
+      'Never include secrets. Capsules expire after 24 hours by default and 7 days maximum.',
     auth: { type: 'service_http', authorization_type: 'bearer' },
     api: { type: 'openapi', url: 'https://www.contextcapsule.ai/.well-known/openapi.json' },
     logo_url: 'https://www.contextcapsule.ai/og-image.png',
@@ -134,10 +131,14 @@ app.get('/.well-known/agent.json', (c) => {
   c.header('X-Robots-Tag', 'noindex, nofollow')
   return c.json({
     name: 'Context Capsule',
-    description: 'Portable context for agent workflows. Structured, compressed, ephemeral handoff packets.',
+    description: 'Local-first, freshness-checked coding handoffs, with an optional hosted sharing API.',
     url: 'https://www.contextcapsule.ai',
     version: '1.0.0',
-    capabilities: ['capsules', 'handoffs', 'context-compression'],
+    capabilities: ['coding-handoffs', 'freshness-checks', 'capsules', 'proof-references'],
+    skill: {
+      repository: 'https://github.com/Johnny-Z13/context-capsule/tree/main/.agents/skills/contextcapsule-handoff',
+      install: 'npx skills add Johnny-Z13/context-capsule --skill contextcapsule-handoff',
+    },
     protocol: 'openapi',
     api: { type: 'openapi', url: 'https://www.contextcapsule.ai/.well-known/openapi.json' },
     auth: { type: 'bearer', signup_url: 'https://www.contextcapsule.ai/v1/auth/signup' },

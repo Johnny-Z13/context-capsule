@@ -80,13 +80,13 @@ export function renderWelcomeEmail(apiKey: string): string {
           <p style="margin:0 0 4px 0;font-size:12px;color:#999;">
             <a href="https://www.contextcapsule.ai" style="color:#16a34a;text-decoration:none;">contextcapsule.ai</a>
           </p>
-          <p style="margin:0;font-size:11px;color:#bbb;">portable context for agent workflows</p>
+          <p style="margin:0;font-size:11px;color:#bbb;">optional hosted sharing for coding handoffs</p>
         </td></tr>
       </table>
 
       <!-- Bottom text -->
       <p style="margin:20px 0 0 0;font-size:11px;color:#555;text-align:center;">
-        You received this because you signed up for a Context Capsule API key.<br>capsules expire, context compounds.
+        You received this because you signed up for a Context Capsule API key.<br>Hosted capsules are public to anyone with their URL.
       </p>
     </td></tr>
   </table>
