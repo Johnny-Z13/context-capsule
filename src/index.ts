@@ -90,23 +90,28 @@ app.get('/docs', (c) => c.html(renderDocsPage()))
 app.get('/llms.txt', (c) => {
   c.header('Content-Type', 'text/plain; charset=utf-8')
   c.header('Cache-Control', 'public, max-age=86400')
+  c.header('X-Robots-Tag', 'noindex, nofollow')
   return c.body(renderLlmsTxt())
 })
 app.get('/llms-full.txt', (c) => {
   c.header('Content-Type', 'text/plain; charset=utf-8')
   c.header('Cache-Control', 'public, max-age=86400')
+  c.header('X-Robots-Tag', 'noindex, nofollow')
   return c.body(renderLlmsFullTxt())
 })
 app.get('/.well-known/openapi.json', (c) => {
   c.header('Cache-Control', 'public, max-age=86400')
+  c.header('X-Robots-Tag', 'noindex, nofollow')
   return c.json(getOpenApiSpec())
 })
 app.get('/.well-known/mcp.json', (c) => {
   c.header('Cache-Control', 'public, max-age=86400')
+  c.header('X-Robots-Tag', 'noindex, nofollow')
   return c.json(getMcpDiscovery())
 })
 app.get('/.well-known/ai-plugin.json', (c) => {
   c.header('Cache-Control', 'public, max-age=86400')
+  c.header('X-Robots-Tag', 'noindex, nofollow')
   return c.json({
     schema_version: 'v1',
     name_for_human: 'Context Capsule',
@@ -126,6 +131,7 @@ app.get('/.well-known/ai-plugin.json', (c) => {
 })
 app.get('/.well-known/agent.json', (c) => {
   c.header('Cache-Control', 'public, max-age=86400')
+  c.header('X-Robots-Tag', 'noindex, nofollow')
   return c.json({
     name: 'Context Capsule',
     description: 'Portable context for agent workflows. Structured, compressed, ephemeral handoff packets.',
@@ -141,7 +147,11 @@ app.get('/.well-known/agent.json', (c) => {
 })
 app.get('/robots.txt', (c) => {
   return c.text(
-    'User-agent: *\nAllow: /\n\n' +
+    'User-agent: *\n' +
+    'Allow: /\n' +
+    'Disallow: /cron/\n' +
+    'Disallow: /dev/\n' +
+    'Disallow: /v1/\n\n' +
     'Sitemap: https://www.contextcapsule.ai/sitemap.xml\n\n' +
     '# AI agent discovery\n' +
     '# LLM context: /llms.txt\n' +
@@ -159,12 +169,7 @@ app.get('/sitemap.xml', (c) => {
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url><loc>https://www.contextcapsule.ai</loc><changefreq>weekly</changefreq><priority>1.0</priority></url>
   <url><loc>https://www.contextcapsule.ai/docs</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://www.contextcapsule.ai/llms.txt</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://www.contextcapsule.ai/llms-full.txt</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://www.contextcapsule.ai/.well-known/openapi.json</loc><changefreq>monthly</changefreq><priority>0.5</priority></url>
-  <url><loc>https://www.contextcapsule.ai/.well-known/mcp.json</loc><changefreq>monthly</changefreq><priority>0.5</priority></url>
-  <url><loc>https://www.contextcapsule.ai/.well-known/agent.json</loc><changefreq>monthly</changefreq><priority>0.5</priority></url>
-  <url><loc>https://www.contextcapsule.ai/.well-known/ai-plugin.json</loc><changefreq>monthly</changefreq><priority>0.5</priority></url>
+  <url><loc>https://www.contextcapsule.ai/example</loc><changefreq>monthly</changefreq><priority>0.5</priority></url>
 </urlset>`)
 })
 
