@@ -8,6 +8,10 @@ describe('coding-handoff positioning', () => {
 
     expect(response.status).toBe(200)
     expect(html).toContain('Switch coding agents without losing the thread.')
+    expect(html).toContain('Use with your coding agent')
+    expect(html).toContain('Hand off a live coding task in three steps.')
+    expect(html).toContain('Prompt your current agent')
+    expect(html).toContain('Copy AI setup prompt')
     expect(html).toContain('npx skills add Johnny-Z13/context-capsule --skill contextcapsule-handoff')
     expect(html).toContain('No account, API key, or upload is required')
     expect(html).toContain('public to anyone with its URL')

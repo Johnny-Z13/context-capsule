@@ -7,7 +7,7 @@ export function renderLandingPage(): string {
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Context Capsule — Coding handoffs that survive agent switches</title>
-  <meta name="description" content="Hand off a coding task between Codex, Claude Code, Cursor, and other agents without starting over. Local-first, structured, freshness-checked, and open source.">
+  <meta name="description" content="Use Context Capsule with your favourite coding agent to hand off a live coding task without starting over. Local-first, freshness-checked, and open source.">
   <meta name="keywords" content="coding agent handoff, Codex handoff, Claude Code handoff, Cursor handoff, Agent Skill, AI coding workflow, structured handoff">
   <meta name="robots" content="index, follow">
   <meta name="author" content="Z13Labs">
@@ -70,7 +70,7 @@ export function renderLandingPage(): string {
     a { color: inherit; }
     button, code, pre { font: inherit; }
     .container {
-      width: min(760px, calc(100% - 2rem));
+      width: min(1120px, calc(100% - 2rem));
       margin: 0 auto;
       padding: 2rem 0 4rem;
     }
@@ -88,16 +88,26 @@ export function renderLandingPage(): string {
       text-transform: uppercase;
       text-decoration: none;
     }
-    .topnav { display: flex; gap: 1.25rem; }
+    .topnav { display: flex; align-items: center; gap: 1.25rem; }
     .topnav a, .footer-nav a {
       color: var(--muted);
       font-size: .72rem;
       text-decoration: none;
     }
     .topnav a:hover, .footer-nav a:hover { color: var(--text); }
+    .topnav .top-cta {
+      padding: .45rem .65rem;
+      border: 1px solid #333;
+      color: var(--text);
+    }
     .hero {
-      padding: 6rem 0 3rem;
-      text-align: center;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(410px, 1fr);
+      gap: clamp(2.5rem, 5vw, 4.5rem);
+      align-items: center;
+      min-height: 610px;
+      margin-bottom: 0;
+      padding: 3.5rem 0 4rem;
     }
     .eyebrow, .section-label {
       color: var(--green);
@@ -106,19 +116,48 @@ export function renderLandingPage(): string {
       text-transform: uppercase;
     }
     .hero h1 {
-      max-width: 700px;
-      margin: 1.2rem auto 1.4rem;
-      font-size: clamp(2rem, 6vw, 4.15rem);
+      max-width: 620px;
+      margin: 1.2rem 0 1.4rem;
+      font-size: clamp(2.2rem, 4.4vw, 3.8rem);
       font-weight: normal;
       letter-spacing: -.055em;
       line-height: 1.06;
     }
     .hero-copy {
-      max-width: 650px;
-      margin: 0 auto;
+      max-width: 590px;
+      margin: 0;
       color: #9a9a9a;
       font-size: clamp(.9rem, 2vw, 1.02rem);
     }
+    .hero-copy strong { color: var(--text); font-weight: normal; }
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: .7rem;
+      margin-top: 1.8rem;
+    }
+    .hero-note { margin-top: .85rem; color: var(--quiet); font-size: .67rem; }
+    .agent-line {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: .5rem;
+      margin-top: 1.2rem;
+    }
+    .agent-line > span:first-child {
+      margin-right: .15rem;
+      color: var(--quiet);
+      font-size: .62rem;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+    .agent-pill {
+      padding: .3rem .48rem;
+      border: 1px solid var(--line);
+      color: var(--muted);
+      font-size: .61rem;
+    }
+    .hero-result .section-label { margin-bottom: 1rem; text-align: left; }
     .install-card {
       max-width: 670px;
       margin: 0 auto 5rem;
@@ -182,6 +221,15 @@ export function renderLandingPage(): string {
     }
     section { margin-bottom: 5.5rem; }
     .section-label { margin-bottom: 1.5rem; text-align: center; }
+    .section-heading {
+      max-width: 780px;
+      margin: 0 auto 1rem;
+      font-size: clamp(1.75rem, 4vw, 3.2rem);
+      font-weight: normal;
+      letter-spacing: -.04em;
+      line-height: 1.15;
+      text-align: center;
+    }
     .section-intro {
       max-width: 620px;
       margin: -0.5rem auto 1.8rem;
@@ -245,6 +293,100 @@ export function renderLandingPage(): string {
       color: var(--muted);
       font-size: .72rem;
     }
+    .onboarding-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1px;
+      margin-top: 2.5rem;
+      background: var(--line);
+      border: 1px solid var(--line);
+    }
+    .onboarding-card {
+      display: flex;
+      min-width: 0;
+      min-height: 360px;
+      flex-direction: column;
+      padding: 1.35rem;
+      background: var(--background);
+    }
+    .onboarding-card .step-number { margin-bottom: 1.7rem; }
+    .onboarding-card h2 { margin: 0 0 .6rem; font-size: .94rem; font-weight: normal; }
+    .onboarding-card > p { margin: 0; color: var(--muted); font-size: .71rem; }
+    .onboarding-card .install-row {
+      flex-direction: column;
+      margin-top: auto;
+    }
+    .onboarding-card .install-command { padding: .85rem; font-size: .63rem; }
+    .onboarding-card .copy-button { min-height: 40px; }
+    .setup-option {
+      margin-top: .8rem;
+      padding-top: .8rem;
+      border-top: 1px solid var(--line);
+    }
+    .setup-label {
+      display: block;
+      margin-bottom: .45rem;
+      color: var(--quiet);
+      font-size: .59rem;
+      letter-spacing: .06em;
+      text-transform: uppercase;
+    }
+    .setup-prompt {
+      display: block;
+      max-height: 5.4rem;
+      padding: .75rem;
+      overflow: auto;
+      border: 1px solid var(--line);
+      background: #080808;
+      color: var(--muted);
+      font-size: .6rem;
+      line-height: 1.55;
+    }
+    .setup-actions {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: .7rem;
+      margin-top: .55rem;
+    }
+    .setup-actions button {
+      border: 1px solid #333;
+      padding: .55rem .65rem;
+      background: transparent;
+      color: var(--text);
+      font: .61rem 'Departure Mono', monospace;
+      cursor: pointer;
+    }
+    .setup-actions button:hover { border-color: var(--green); }
+    .setup-actions a { color: var(--muted); font-size: .59rem; }
+    .prompt-box {
+      margin-top: auto;
+      padding: 1rem;
+      border: 1px solid #333;
+      background: #080808;
+      color: #c2c2c2;
+      font-size: .68rem;
+      line-height: 1.7;
+    }
+    .prompt-box::before { content: '> '; color: var(--green); }
+    .resume-result {
+      margin-top: auto;
+      padding: 1rem;
+      border-left: 2px solid var(--green);
+      background: #080808;
+      color: #aaa;
+      font-size: .67rem;
+    }
+    .resume-result strong { display: block; margin-bottom: .3rem; color: var(--green); font-weight: normal; }
+    .start-note {
+      display: flex;
+      justify-content: space-between;
+      gap: 1rem;
+      margin-top: 1rem;
+      color: var(--quiet);
+      font-size: .66rem;
+    }
+    .start-note a { color: var(--muted); }
     .card-grid { grid-template-columns: 1fr 1fr; }
     .card code { color: #96c68a; font-size: .68rem; }
     .trust-box {
@@ -292,13 +434,18 @@ export function renderLandingPage(): string {
     .footer-nav { display: flex; justify-content: center; flex-wrap: wrap; gap: 1.2rem; }
     .footer-note { margin-top: 1.25rem; color: #393939; font-size: .66rem; }
     @media (max-width: 700px) {
-      .container { width: min(100% - 1.25rem, 760px); }
+      .container { width: min(100% - 1.25rem, 1120px); }
       .topnav a:not(:last-child) { display: none; }
-      .hero { padding-top: 4rem; }
+      .hero { grid-template-columns: 1fr; min-height: auto; padding: 4rem 0; }
+      .hero h1 { font-size: clamp(2.45rem, 12vw, 4rem); }
+      .hero-actions { align-items: stretch; flex-direction: column; }
+      .hero-actions a { width: 100%; }
       .install-row { flex-direction: column; }
       .copy-button { width: 100%; }
       .install-actions { flex-direction: column; }
-      .steps, .card-grid, .pair-grid, .hosted { grid-template-columns: 1fr; }
+      .steps, .card-grid, .pair-grid, .hosted, .onboarding-grid { grid-template-columns: 1fr; }
+      .onboarding-card { min-height: auto; }
+      .start-note { align-items: flex-start; flex-direction: column; }
     }
   </style>
 </head>
@@ -310,57 +457,97 @@ export function renderLandingPage(): string {
         <a href="#how-it-works">How it works</a>
         <a href="/docs">Hosted API</a>
         <a href="https://github.com/Johnny-Z13/context-capsule">GitHub</a>
+        <a class="top-cta" href="#get-started">Get started</a>
       </nav>
     </header>
 
     <section class="hero">
-      <div class="eyebrow">Open-source Agent Skill</div>
-      <h1>Switch coding agents without losing the thread.</h1>
-      <p class="hero-copy">Context Capsule hands the next coding agent the repository state, decisions, constraints, verification, blockers, and exact next action it needs to continue safely.</p>
+      <div>
+        <div class="eyebrow">Open-source Agent Skill</div>
+        <h1>Switch coding agents without losing the thread.</h1>
+        <p class="hero-copy">Context Capsule gives the next coding agent a <strong>small, checkable handoff</strong>—what changed, what matters, what was verified, and exactly what to do next.</p>
+        <div class="hero-actions">
+          <a class="primary-link" href="#get-started">Use with your coding agent</a>
+          <a class="secondary-link" href="/example">See an example handoff</a>
+        </div>
+        <p class="hero-note">Install once · works locally · no account, API key, or upload</p>
+        <div class="agent-line" aria-label="Compatible coding agents">
+          <span>Works with</span>
+          <span class="agent-pill">Codex</span>
+          <span class="agent-pill">Claude Code</span>
+          <span class="agent-pill">Cursor</span>
+          <span class="agent-pill">Compatible agents</span>
+        </div>
+      </div>
+
+      <div class="hero-result" aria-labelledby="example-label">
+        <div class="section-label" id="example-label">What the next agent receives</div>
+        <div class="printout-shell">
+          <div class="printout-header"><span>Context Capsule / coding-handoff/v1</span><span class="status">Compatible</span></div>
+          <div class="printout-row">
+            <div class="printout-key">Objective</div>
+            <div class="printout-value">Finish the refresh-token migration without breaking legacy consumers.</div>
+          </div>
+          <div class="printout-row">
+            <div class="printout-key">Current status</div>
+            <div class="printout-value">Implementation is complete. Production has not been checked.</div>
+          </div>
+          <div class="printout-row">
+            <div class="printout-key">Decision</div>
+            <div class="printout-value">Keep the legacy endpoint; three consumers still use it.</div>
+          </div>
+          <div class="printout-row">
+            <div class="printout-key">Verification</div>
+            <div class="printout-value"><code>npm test -- --run</code> — 71 passed — observed locally.</div>
+          </div>
+          <div class="printout-row">
+            <div class="printout-key">Next action</div>
+            <div class="printout-value">Run the staging smoke test, then ask before release.</div>
+          </div>
+          <div class="printout-meta"><span>HEAD 81d9c1a · dirty</span><span>expires in 24 hours</span></div>
+        </div>
+      </div>
     </section>
 
-    <section class="install-card" aria-label="Install Context Capsule">
-      <div class="install-label">Install for Codex, Claude Code, Cursor, and compatible agents</div>
-      <div class="install-row">
-        <code class="install-command" id="install-command">npx skills add Johnny-Z13/context-capsule --skill contextcapsule-handoff</code>
-        <button class="copy-button" id="copy-button" type="button" onclick="copyInstall()">Copy</button>
+    <section id="get-started">
+      <div class="section-label">Use the agent you already work with</div>
+      <h2 class="section-heading">Hand off a live coding task in three steps.</h2>
+      <p class="section-intro">No new app to learn. Add the skill, ask the current agent to package the useful state, then point the next agent at the handoff.</p>
+      <div class="onboarding-grid">
+        <article class="onboarding-card">
+          <div class="step-number">01 / INSTALL</div>
+          <h2>Add the skill once</h2>
+          <p>The readable skill teaches your agent how to create and resume a safe local handoff.</p>
+          <div class="install-row">
+            <code class="install-command" id="install-command">npx skills add Johnny-Z13/context-capsule --skill contextcapsule-handoff</code>
+            <button class="copy-button" id="copy-button" type="button" aria-live="polite" onclick="copyInstall()">Copy install command</button>
+          </div>
+          <div class="setup-option">
+            <span class="setup-label">Or paste this into your agent</span>
+            <code class="setup-prompt" id="setup-prompt">Install the contextcapsule-handoff skill from https://github.com/Johnny-Z13/context-capsule using the skills CLI. Then explain how to create and resume a local handoff in this repository. Do not write files yet.</code>
+            <div class="setup-actions">
+              <button id="copy-setup-button" type="button" aria-live="polite" onclick="copySetupPrompt()">Copy AI setup prompt</button>
+              <a href="https://github.com/Johnny-Z13/context-capsule/tree/main/.agents/skills/contextcapsule-handoff">View on GitHub</a>
+            </div>
+          </div>
+        </article>
+        <article class="onboarding-card">
+          <div class="step-number">02 / HAND OFF</div>
+          <h2>Prompt your current agent</h2>
+          <p>It inspects the repository, separates observed facts from claims, and asks before writing anything.</p>
+          <div class="prompt-box">Create a Context Capsule handoff for this task. Keep it local and show me what will be written first.</div>
+        </article>
+        <article class="onboarding-card">
+          <div class="step-number">03 / RESUME</div>
+          <h2>Open your next agent</h2>
+          <p>The receiving agent checks that the repository still matches before relying on the saved state.</p>
+          <div class="prompt-box">Resume this task from .contextcapsule/latest.json. Check freshness before continuing.</div>
+          <div class="resume-result"><strong>Compatible</strong>Objective, decisions, verification, blockers, and next action are ready.</div>
+        </article>
       </div>
-      <div class="install-actions">
-        <a class="primary-link" href="https://github.com/Johnny-Z13/context-capsule/tree/main/.agents/skills/contextcapsule-handoff">Read the skill</a>
-        <a class="secondary-link" href="/example">See a handoff</a>
-      </div>
-      <p class="install-note">The skill works locally. No account, API key, or upload is required.</p>
-    </section>
-
-    <section aria-labelledby="example-label">
-      <div class="section-label" id="example-label">A legible coding handoff</div>
-      <div class="printout-shell">
-        <div class="printout-header"><span>Context Capsule / coding-handoff/v1</span><span class="status">Compatible</span></div>
-        <div class="printout-row">
-          <div class="printout-key">Objective</div>
-          <div class="printout-value">Finish the refresh-token migration without breaking legacy consumers.</div>
-        </div>
-        <div class="printout-row">
-          <div class="printout-key">Current status</div>
-          <div class="printout-value">Implementation is complete on <code>codex/refresh-window</code>. Production has not been checked.</div>
-        </div>
-        <div class="printout-row">
-          <div class="printout-key">Decisions and constraints</div>
-          <div class="printout-value"><ul><li>Keep the legacy endpoint; three consumers still use it.</li><li>Do not publish without human approval.</li></ul></div>
-        </div>
-        <div class="printout-row">
-          <div class="printout-key">Verification</div>
-          <div class="printout-value"><code>npm test -- --run</code> — 71 passed — observed locally at 12:04 UTC.</div>
-        </div>
-        <div class="printout-row">
-          <div class="printout-key">Next action</div>
-          <div class="printout-value">Run the staging smoke test, then ask before release.</div>
-        </div>
-        <div class="printout-row">
-          <div class="printout-key">Evidence reference</div>
-          <div class="printout-value">ProofSlip: none yet — deployment is not proven.</div>
-        </div>
-        <div class="printout-meta"><span>HEAD 81d9c1a · dirty</span><span>expires in 24 hours</span></div>
+      <div class="start-note">
+        <span>The handoff stays in your repository by default. No account, API key, or upload is required.</span>
+        <a href="https://github.com/Johnny-Z13/context-capsule/tree/main/.agents/skills/contextcapsule-handoff">Read the skill source →</a>
       </div>
     </section>
 
@@ -468,17 +655,23 @@ export function renderLandingPage(): string {
       }
       return copied;
     }
-    async function copyInstall() {
-      var command = document.getElementById('install-command').textContent;
-      var source = document.getElementById('install-command');
-      var button = document.getElementById('copy-button');
+    async function copyText(sourceId, buttonId, resetLabel) {
+      var source = document.getElementById(sourceId);
+      var command = source.textContent;
+      var button = document.getElementById(buttonId);
       var copied = false;
       if (navigator.clipboard && window.isSecureContext) {
         try { await navigator.clipboard.writeText(command); copied = true; } catch (error) { copied = false; }
       }
       if (!copied) copied = fallbackCopy(command, source);
       button.textContent = copied ? 'Copied' : 'Selected';
-      setTimeout(function () { button.textContent = 'Copy'; }, 2500);
+      setTimeout(function () { button.textContent = resetLabel; }, 2500);
+    }
+    function copyInstall() {
+      return copyText('install-command', 'copy-button', 'Copy install command');
+    }
+    function copySetupPrompt() {
+      return copyText('setup-prompt', 'copy-setup-button', 'Copy AI setup prompt');
     }
   </script>
 </body>
