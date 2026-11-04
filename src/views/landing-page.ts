@@ -630,6 +630,7 @@ export function renderLandingPage(): string {
         <a href="https://www.proofslip.ai">ProofSlip</a>
         <a href="https://github.com/Johnny-Z13/context-capsule">GitHub</a>
         <a href="https://z13labs.com">Z13Labs</a>
+        <a href="mailto:hello@z13labs.com">hello@z13labs.com</a>
       </nav>
       <div class="footer-note">Context expires. Decisions transfer.</div>
     </footer>

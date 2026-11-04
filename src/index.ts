@@ -122,7 +122,7 @@ app.get('/.well-known/ai-plugin.json', (c) => {
     auth: { type: 'service_http', authorization_type: 'bearer' },
     api: { type: 'openapi', url: 'https://www.contextcapsule.ai/.well-known/openapi.json' },
     logo_url: 'https://www.contextcapsule.ai/og-image.png',
-    contact_email: 'hello@contextcapsule.ai',
+    contact_email: 'hello@z13labs.com',
     legal_info_url: 'https://www.contextcapsule.ai',
   })
 })
